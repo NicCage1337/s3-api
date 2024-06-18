@@ -47,110 +47,36 @@
   },
   "servers": [
     {
-      "url": "http://s3{dash-or-dot}{region}.amazonaws.com",
+      "url": "https://s3.{region}.cloud.sap",
       "variables": {
         "region": {
           "description": "The AWS region",
           "enum": [
-            "us-east-1"
+            "eu-de-1",
+            "eu-de-2"
           ],
-          "default": "us-east-1"
-        },
-        "dash-or-dot": {
-          "description": "The service/region URL separator",
-          "enum": [
-            ".",
-            "-"
-          ],
-          "default": "."
+          "default": "eu-de-1"
         }
       },
       "description": "The Amazon S3 multi-region endpoint"
     },
     {
-      "url": "https://s3{dash-or-dot}{region}.amazonaws.com",
+      "url": "https://objectstore-3.{region}.cloud.sap",
       "variables": {
         "region": {
           "description": "The AWS region",
           "enum": [
-            "us-east-1"
-           ],
-          "default": "us-east-1"
-        },
-        "dash-or-dot": {
-          "description": "The service/region URL separator",
-          "enum": [
-            ".",
-            "-"
+            "eu-de-1",
+            "eu-de-2"
           ],
-          "default": "."
+          "default": "eu-de-1"
         }
       },
       "description": "The Amazon S3 multi-region endpoint"
     },
     {
-      "url": "http://s3.amazonaws.com",
-      "variables": {},
-      "description": "The general Amazon S3 endpoint for US East (N. Virginia)"
-    },
-    {
-      "url": "https://s3.amazonaws.com",
-      "variables": {},
-      "description": "The general Amazon S3 endpoint for US East (N. Virginia)"
-    },
-    {
-      "url": "http://s3.{region}.amazonaws.com",
-      "variables": {
-        "region": {
-          "description": "The AWS region",
-          "enum": [
-            "us-east-2"
-          ],
-          "default": "us-east-2"
-        }
-      },
-      "description": "The Amazon S3 multi-region endpoint"
-    },
-    {
-      "url": "https://s3.{region}.amazonaws.com",
-      "variables": {
-        "region": {
-          "description": "The AWS region",
-          "enum": [
-            "us-east-2"
-          ],
-          "default": "us-east-2"
-        }
-      },
-      "description": "The Amazon S3 multi-region endpoint"
-    },
-    {
-      "url": "http://s3.{region}.amazonaws.com.cn",
-      "variables": {
-        "region": {
-          "description": "The AWS region",
-          "enum": [
-            "cn-north-1",
-            "cn-northwest-1"
-          ],
-          "default": "cn-north-1"
-        }
-      },
-      "description": "The Amazon S3 endpoint for China (Beijing) and China (Ningxia)"
-    },
-    {
-      "url": "https://s3.{region}.amazonaws.com.cn",
-      "variables": {
-        "region": {
-          "description": "The AWS region",
-          "enum": [
-            "cn-north-1",
-            "cn-northwest-1"
-          ],
-          "default": "cn-north-1"
-        }
-      },
-      "description": "The Amazon S3 endpoint for China (Beijing) and China (Ningxia)"
+      "url": "http://s3waf.oidctest.c.eu-de-2.cloud.sap",
+      "description": "S3 with WAF testing endpoint"
     }
   ],
   "x-hasEquivalentPaths": true,
