@@ -598,7 +598,7 @@
         }
       ]
     },
-    "/{Bucket}": {
+    "/{Bucket}/": {
       "parameters": [
         {
           "$ref": "#/components/parameters/x-amz-security-token"
