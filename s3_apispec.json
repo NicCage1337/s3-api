@@ -81,7 +81,7 @@
   ],
   "x-hasEquivalentPaths": true,
   "paths": {
-    "/{Bucket}/?slocation": {
+    "/{Bucket}/?location": {
       "get": {
         "operationId": "GetBucketLocation",
         "description": "",
