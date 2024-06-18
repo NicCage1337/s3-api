@@ -997,29 +997,6 @@
             }
           },
           {
-            "name": "x-amz-object-lock-retain-until-date",
-            "in": "header",
-            "required": false,
-            "description": "The date and time when you want the copied object's Object Lock to expire.",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "x-amz-object-lock-legal-hold",
-            "in": "header",
-            "required": false,
-            "description": "Specifies whether you want to apply a legal hold to the copied object.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ON",
-                "OFF"
-              ]
-            }
-          },
-          {
             "name": "x-amz-expected-bucket-owner",
             "in": "header",
             "required": false,
@@ -4688,240 +4665,6 @@
       "Quiet": {
         "type": "boolean"
       },
-      "GetBucketAccelerateConfigurationOutput": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketAccelerateStatus"
-              },
-              {
-                "description": "The accelerate configuration of the bucket."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketAclOutput": {
-        "type": "object",
-        "properties": {
-          "Owner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Owner"
-              },
-              {
-                "description": "Container for the bucket owner's display name and ID."
-              }
-            ]
-          },
-          "Grants": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Grants"
-              },
-              {
-                "xml": {
-                  "name": "AccessControlList"
-                },
-                "description": "A list of grants."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketAnalyticsConfigurationOutput": {
-        "type": "object",
-        "properties": {
-          "AnalyticsConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsConfiguration"
-              },
-              {
-                "description": "The configuration and any analyses for the analytics filter."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketCorsOutput": {
-        "type": "object",
-        "example": {
-          "CORSRules": [
-            {
-              "AllowedHeaders": [
-                "Authorization"
-              ],
-              "AllowedMethods": [
-                "GET"
-              ],
-              "AllowedOrigins": [
-                "*"
-              ],
-              "MaxAgeSeconds": 3000
-            }
-          ]
-        },
-        "properties": {
-          "CORSRules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CORSRules"
-              },
-              {
-                "xml": {
-                  "name": "CORSRule"
-                },
-                "description": "A set of origins and methods (cross-origin access that you want to allow). You can add up to 100 rules to the configuration."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketEncryptionOutput": {
-        "type": "object",
-        "properties": {
-          "ServerSideEncryptionConfiguration": {
-            "$ref": "#/components/schemas/ServerSideEncryptionConfiguration"
-          }
-        }
-      },
-      "GetBucketIntelligentTieringConfigurationOutput": {
-        "type": "object",
-        "properties": {
-          "IntelligentTieringConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringConfiguration"
-              },
-              {
-                "description": "Container for S3 Intelligent-Tiering configuration."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketInventoryConfigurationOutput": {
-        "type": "object",
-        "properties": {
-          "InventoryConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryConfiguration"
-              },
-              {
-                "description": "Specifies the inventory configuration."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketLifecycleOutput": {
-        "type": "object",
-        "example": {
-          "Rules": [
-            {
-              "Expiration": {
-                "Days": 1
-              },
-              "ID": "delete logs",
-              "Prefix": "123/",
-              "Status": "Enabled"
-            }
-          ]
-        },
-        "properties": {
-          "Rules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Rules"
-              },
-              {
-                "xml": {
-                  "name": "Rule"
-                },
-                "description": "Container for a lifecycle rule."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketLifecycleConfigurationOutput": {
-        "type": "object",
-        "example": {
-          "Rules": [
-            {
-              "ID": "Rule for TaxDocs/",
-              "Prefix": "TaxDocs",
-              "Status": "Enabled",
-              "Transitions": [
-                {
-                  "Days": 365,
-                  "StorageClass": "STANDARD_IA"
-                }
-              ]
-            }
-          ]
-        },
-        "properties": {
-          "Rules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LifecycleRules"
-              },
-              {
-                "xml": {
-                  "name": "Rule"
-                },
-                "description": "Container for a lifecycle rule."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketLocationOutput": {
-        "type": "object",
-        "example": {
-          "LocationConstraint": "us-west-2"
-        },
-        "properties": {
-          "LocationConstraint": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketLocationConstraint"
-              },
-              {
-                "description": "Specifies the Region where the bucket resides. For a list of all the Amazon S3 supported location constraints by Region, see <a href=\"https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region\">Regions and Endpoints</a>. Buckets in Region <code>us-east-1</code> have a LocationConstraint of <code>null</code>."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketLoggingOutput": {
-        "type": "object",
-        "properties": {
-          "LoggingEnabled": {
-            "$ref": "#/components/schemas/LoggingEnabled"
-          }
-        }
-      },
-      "GetBucketMetricsConfigurationOutput": {
-        "type": "object",
-        "properties": {
-          "MetricsConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsConfiguration"
-              },
-              {
-                "description": "Specifies the metrics configuration."
-              }
-            ]
-          }
-        }
-      },
       "NotificationConfigurationDeprecated": {
         "type": "object",
         "example": {
@@ -5040,39 +4783,6 @@
               },
               {
                 "description": "The <code>OwnershipControls</code> (BucketOwnerEnforced, BucketOwnerPreferred, or ObjectWriter) currently in effect for this Amazon S3 bucket."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketPolicyOutput": {
-        "type": "object",
-        "example": {
-          "Policy": "{\"Version\":\"2008-10-17\",\"Id\":\"LogPolicy\",\"Statement\":[{\"Sid\":\"Enables the log delivery group to publish logs to your bucket \",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"111122223333\"},\"Action\":[\"s3:GetBucketAcl\",\"s3:GetObjectAcl\",\"s3:PutObject\"],\"Resource\":[\"arn:aws:s3:::policytest1/*\",\"arn:aws:s3:::policytest1\"]}]}"
-        },
-        "properties": {
-          "Policy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Policy"
-              },
-              {
-                "description": "The bucket policy as a JSON document."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketPolicyStatusOutput": {
-        "type": "object",
-        "properties": {
-          "PolicyStatus": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PolicyStatus"
-              },
-              {
-                "description": "The policy status for the specified bucket."
               }
             ]
           }
@@ -6551,13 +6261,6 @@
           }
         }
       },
-      "BucketAccelerateStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Suspended"
-        ]
-      },
       "Grants": {
         "type": "array",
         "items": {
@@ -6598,45 +6301,6 @@
           }
         },
         "description": "Container for the owner's display name and ID."
-      },
-      "AnalyticsId": {
-        "type": "string"
-      },
-      "AnalyticsFilter": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix to use when evaluating an analytics filter."
-              }
-            ]
-          },
-          "Tag": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tag"
-              },
-              {
-                "description": "The tag to use when evaluating an analytics filter."
-              }
-            ]
-          },
-          "And": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsAndOperator"
-              },
-              {
-                "description": "A conjunction (logical AND) of predicates, which is used in evaluating an analytics filter. The operator must have at least two predicates."
-              }
-            ]
-          }
-        },
-        "description": "The filter used to describe a set of objects for analyses. A filter must have exactly one prefix, one tag, or one conjunction (AnalyticsAndOperator). If no filter is provided, all objects will be considered in any analysis."
       },
       "StorageClassAnalysis": {
         "type": "object",
@@ -7224,17 +6888,6 @@
         "example": {},
         "properties": {}
       },
-      "PutObjectLegalHoldOutput": {
-        "type": "object",
-        "properties": {}
-      },
-      "ObjectLockLegalHoldStatus": {
-        "type": "string",
-        "enum": [
-          "ON",
-          "OFF"
-        ]
-      },
       "PutObjectLockConfigurationOutput": {
         "type": "object",
         "properties": {}
@@ -7655,53 +7308,8 @@
       "AccountId": {
         "type": "string"
       },
-      "AccelerateConfiguration": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketAccelerateStatus"
-              },
-              {
-                "description": "Specifies the transfer acceleration status of the bucket."
-              }
-            ]
-          }
-        },
-        "description": "Configures the transfer acceleration state for an Amazon S3 bucket. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/transfer-acceleration.html\">Amazon S3 Transfer Acceleration</a> in the <i>Amazon S3 User Guide</i>."
-      },
       "AcceptRanges": {
         "type": "string"
-      },
-      "AccessControlPolicy": {
-        "type": "object",
-        "properties": {
-          "Grants": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Grants"
-              },
-              {
-                "xml": {
-                  "name": "AccessControlList"
-                },
-                "description": "A list of grants."
-              }
-            ]
-          },
-          "Owner": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Owner"
-              },
-              {
-                "description": "Container for the bucket owner's display name and ID."
-              }
-            ]
-          }
-        },
-        "description": "Contains the elements that set the ACL permissions for an object per grantee."
       },
       "OwnerOverride": {
         "type": "string",
@@ -7773,156 +7381,6 @@
       "Prefix": {
         "type": "string"
       },
-      "AnalyticsAndOperator": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix to use when evaluating an AND predicate: The prefix that an object must have to be included in the metrics results."
-              }
-            ]
-          },
-          "Tags": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "xml": {
-                  "name": "Tag"
-                },
-                "description": "The list of tags to use when evaluating an AND predicate."
-              }
-            ]
-          }
-        },
-        "description": "A conjunction (logical AND) of predicates, which is used in evaluating a metrics filter. The operator must have at least two predicates in any combination, and an object must match all of the predicates for the filter to apply.",
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "AnalyticsConfiguration": {
-        "type": "object",
-        "required": [
-          "Id",
-          "StorageClassAnalysis"
-        ],
-        "properties": {
-          "Id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsId"
-              },
-              {
-                "description": "The ID that identifies the analytics configuration."
-              }
-            ]
-          },
-          "Filter": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsFilter"
-              },
-              {
-                "description": "The filter used to describe a set of objects for analyses. A filter must have exactly one prefix, one tag, or one conjunction (AnalyticsAndOperator). If no filter is provided, all objects will be considered in any analysis."
-              }
-            ]
-          },
-          "StorageClassAnalysis": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StorageClassAnalysis"
-              },
-              {
-                "description": " Contains data related to access patterns to be collected and made available to analyze the tradeoffs between different storage classes. "
-              }
-            ]
-          }
-        },
-        "description": "Specifies the configuration and any analyses for the analytics filter of an Amazon S3 bucket."
-      },
-      "AnalyticsConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/AnalyticsConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "AnalyticsS3BucketDestination": {
-        "type": "object",
-        "required": [
-          "Format",
-          "Bucket"
-        ],
-        "properties": {
-          "Format": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsS3ExportFileFormat"
-              },
-              {
-                "description": "Specifies the file format used when exporting data to Amazon S3."
-              }
-            ]
-          },
-          "BucketAccountId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountId"
-              },
-              {
-                "description": "<p>The account ID that owns the destination S3 bucket. If no account ID is provided, the owner is not validated before exporting data.</p> <note> <p> Although this value is optional, we strongly recommend that you set it to help prevent problems if the destination bucket ownership changes. </p> </note>"
-              }
-            ]
-          },
-          "Bucket": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketName"
-              },
-              {
-                "description": "The Amazon Resource Name (ARN) of the bucket to which data is exported."
-              }
-            ]
-          },
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix to use when exporting data. The prefix is prepended to all results."
-              }
-            ]
-          }
-        },
-        "description": "Contains information about where to publish the analytics results."
-      },
-      "AnalyticsExportDestination": {
-        "type": "object",
-        "required": [
-          "S3BucketDestination"
-        ],
-        "properties": {
-          "S3BucketDestination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsS3BucketDestination"
-              },
-              {
-                "description": "A destination signifying output to an S3 bucket."
-              }
-            ]
-          }
-        },
-        "description": "Where to publish the analytics results."
-      },
       "Tag": {
         "type": "object",
         "required": [
@@ -7959,13 +7417,6 @@
           "CSV"
         ]
       },
-      "ArchiveStatus": {
-        "type": "string",
-        "enum": [
-          "ARCHIVE_ACCESS",
-          "DEEP_ARCHIVE_ACCESS"
-        ]
-      },
       "Body": {
         "type": "string"
       },
@@ -7999,34 +7450,8 @@
         },
         "description": " In terms of implementation, a Bucket is a resource. An Amazon S3 bucket name is globally unique, and the namespace is shared by all Amazon Web Services accounts. "
       },
-      "BucketCannedACL": {
-        "type": "string",
-        "enum": [
-          "private",
-          "public-read",
-          "public-read-write",
-          "authenticated-read"
-        ]
-      },
       "BucketKeyEnabled": {
         "type": "boolean"
-      },
-      "BucketLoggingStatus": {
-        "type": "object",
-        "properties": {
-          "LoggingEnabled": {
-            "$ref": "#/components/schemas/LoggingEnabled"
-          }
-        },
-        "description": "Container for logging status information."
-      },
-      "BucketLogsPermission": {
-        "type": "string",
-        "enum": [
-          "FULL_CONTROL",
-          "READ",
-          "WRITE"
-        ]
       },
       "Buckets": {
         "type": "array",
@@ -8686,12 +8111,6 @@
       "GrantRead": {
         "type": "string"
       },
-      "GrantReadACP": {
-        "type": "string"
-      },
-      "GrantWriteACP": {
-        "type": "string"
-      },
       "Metadata": {
         "type": "object",
         "additionalProperties": {
@@ -8999,26 +8418,6 @@
       "DeleteBucketEncryptionRequest": {
         "type": "object",
         "title": "DeleteBucketEncryptionRequest",
-        "properties": {}
-      },
-      "DeleteBucketIntelligentTieringConfigurationRequest": {
-        "type": "object",
-        "title": "DeleteBucketIntelligentTieringConfigurationRequest",
-        "properties": {}
-      },
-      "DeleteBucketInventoryConfigurationRequest": {
-        "type": "object",
-        "title": "DeleteBucketInventoryConfigurationRequest",
-        "properties": {}
-      },
-      "DeleteBucketLifecycleRequest": {
-        "type": "object",
-        "title": "DeleteBucketLifecycleRequest",
-        "properties": {}
-      },
-      "DeleteBucketMetricsConfigurationRequest": {
-        "type": "object",
-        "title": "DeleteBucketMetricsConfigurationRequest",
         "properties": {}
       },
       "DeleteBucketOwnershipControlsRequest": {
@@ -9624,26 +9023,6 @@
           "wrapped": false
         }
       },
-      "GetBucketAccelerateConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketAccelerateConfigurationRequest",
-        "properties": {}
-      },
-      "GetBucketAclRequest": {
-        "type": "object",
-        "title": "GetBucketAclRequest",
-        "properties": {}
-      },
-      "GetBucketAnalyticsConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketAnalyticsConfigurationRequest",
-        "properties": {}
-      },
-      "GetBucketCorsRequest": {
-        "type": "object",
-        "title": "GetBucketCorsRequest",
-        "properties": {}
-      },
       "ServerSideEncryptionConfiguration": {
         "type": "object",
         "required": [
@@ -9823,53 +9202,9 @@
         "title": "GetBucketLifecycleConfigurationRequest",
         "properties": {}
       },
-      "GetBucketLifecycleRequest": {
-        "type": "object",
-        "title": "GetBucketLifecycleRequest",
-        "properties": {}
-      },
       "GetBucketLocationRequest": {
         "type": "object",
         "title": "GetBucketLocationRequest",
-        "properties": {}
-      },
-      "GetBucketLoggingRequest": {
-        "type": "object",
-        "title": "GetBucketLoggingRequest",
-        "properties": {}
-      },
-      "MetricsConfiguration": {
-        "type": "object",
-        "required": [
-          "Id"
-        ],
-        "properties": {
-          "Id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsId"
-              },
-              {
-                "description": "The ID used to identify the metrics configuration."
-              }
-            ]
-          },
-          "Filter": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsFilter"
-              },
-              {
-                "description": "Specifies a metrics configuration filter. The metrics configuration will only include objects that meet the filter's criteria. A filter must be a prefix, an object tag, an access point ARN, or a conjunction (MetricsAndOperator)."
-              }
-            ]
-          }
-        },
-        "description": "Specifies a metrics configuration for the CloudWatch request metrics (specified by the metrics configuration ID) from an Amazon S3 bucket. If you're updating an existing metrics configuration, note that this is a full replacement of the existing metrics configuration. If you don't include the elements you want to keep, they are erased. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTMetricConfiguration.html\">PutBucketMetricsConfiguration</a>."
-      },
-      "GetBucketMetricsConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketMetricsConfigurationRequest",
         "properties": {}
       },
       "GetBucketNotificationConfigurationRequest": {
@@ -9902,35 +9237,6 @@
       "GetBucketOwnershipControlsRequest": {
         "type": "object",
         "title": "GetBucketOwnershipControlsRequest",
-        "properties": {}
-      },
-      "Policy": {
-        "type": "string"
-      },
-      "GetBucketPolicyRequest": {
-        "type": "object",
-        "title": "GetBucketPolicyRequest",
-        "properties": {}
-      },
-      "PolicyStatus": {
-        "type": "object",
-        "properties": {
-          "IsPublic": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsPublic"
-              },
-              {
-                "description": "The policy status for this bucket. <code>TRUE</code> indicates that this bucket is public. <code>FALSE</code> indicates that the bucket is not public."
-              }
-            ]
-          }
-        },
-        "description": "The container element for a bucket's policy status."
-      },
-      "GetBucketPolicyStatusRequest": {
-        "type": "object",
-        "title": "GetBucketPolicyStatusRequest",
         "properties": {}
       },
       "ReplicationConfiguration": {
@@ -10111,27 +9417,6 @@
       "GetObjectAttributesRequest": {
         "type": "object",
         "title": "GetObjectAttributesRequest",
-        "properties": {}
-      },
-      "ObjectLockLegalHold": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectLockLegalHoldStatus"
-              },
-              {
-                "description": "Indicates whether the specified object has a legal hold in place."
-              }
-            ]
-          }
-        },
-        "description": "A legal hold configuration for an object."
-      },
-      "GetObjectLegalHoldRequest": {
-        "type": "object",
-        "title": "GetObjectLegalHoldRequest",
         "properties": {}
       },
       "ObjectLockConfiguration": {
@@ -10527,57 +9812,6 @@
         },
         "description": "Describes the serialization format of the object."
       },
-      "IntelligentTieringAccessTier": {
-        "type": "string",
-        "enum": [
-          "ARCHIVE_ACCESS",
-          "DEEP_ARCHIVE_ACCESS"
-        ]
-      },
-      "IntelligentTieringAndOperator": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "An object key name prefix that identifies the subset of objects to which the configuration applies."
-              }
-            ]
-          },
-          "Tags": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "xml": {
-                  "name": "Tag"
-                },
-                "description": "All of these tags must exist in the object's tag set in order for the configuration to apply."
-              }
-            ]
-          }
-        },
-        "description": "A container for specifying S3 Intelligent-Tiering filters. The filters determine the subset of objects to which the rule applies.",
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "IntelligentTieringConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/IntelligentTieringConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "IntelligentTieringDays": {
-        "type": "integer"
-      },
       "InventoryConfigurationList": {
         "type": "array",
         "items": {
@@ -10873,55 +10107,6 @@
         },
         "description": "Container for the expiration for the lifecycle of the object."
       },
-      "LifecycleRuleFilter": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "<p>Prefix identifying one or more objects to which the rule applies.</p> <important> <p>Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-xml-related-constraints\"> XML related object key constraints</a>.</p> </important>"
-              }
-            ]
-          },
-          "Tag": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tag"
-              },
-              {
-                "description": "This tag must exist in the object's tag set in order for the rule to apply."
-              }
-            ]
-          },
-          "ObjectSizeGreaterThan": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectSizeGreaterThanBytes"
-              },
-              {
-                "description": "Minimum object size to which the rule applies."
-              }
-            ]
-          },
-          "ObjectSizeLessThan": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectSizeLessThanBytes"
-              },
-              {
-                "description": "Maximum object size to which the rule applies."
-              }
-            ]
-          },
-          "And": {
-            "$ref": "#/components/schemas/LifecycleRuleAndOperator"
-          }
-        },
-        "description": "The <code>Filter</code> is used to identify objects that a Lifecycle Rule applies to. A <code>Filter</code> must have exactly one of <code>Prefix</code>, <code>Tag</code>, or <code>And</code> specified."
-      },
       "TransitionList": {
         "type": "array",
         "items": {
@@ -10972,73 +10157,11 @@
       "ObjectSizeLessThanBytes": {
         "type": "integer"
       },
-      "LifecycleRuleAndOperator": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "Prefix identifying one or more objects to which the rule applies."
-              }
-            ]
-          },
-          "Tags": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "xml": {
-                  "name": "Tag"
-                },
-                "description": "All of these tags must exist in the object's tag set in order for the rule to apply."
-              }
-            ]
-          },
-          "ObjectSizeGreaterThan": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectSizeGreaterThanBytes"
-              },
-              {
-                "description": "Minimum object size to which the rule applies."
-              }
-            ]
-          },
-          "ObjectSizeLessThan": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectSizeLessThanBytes"
-              },
-              {
-                "description": "Maximum object size to which the rule applies."
-              }
-            ]
-          }
-        },
-        "description": "This is used in a Lifecycle Rule Filter to apply a logical AND to two or more predicates. The Lifecycle Rule will apply to any object matching all of the predicates configured inside the And operator.",
-        "xml": {
-          "wrapped": false
-        }
-      },
       "Token": {
         "type": "string"
       },
       "NextToken": {
         "type": "string"
-      },
-      "ListBucketAnalyticsConfigurationsRequest": {
-        "type": "object",
-        "title": "ListBucketAnalyticsConfigurationsRequest",
-        "properties": {}
-      },
-      "ListBucketIntelligentTieringConfigurationsRequest": {
-        "type": "object",
-        "title": "ListBucketIntelligentTieringConfigurationsRequest",
-        "properties": {}
       },
       "ListBucketInventoryConfigurationsRequest": {
         "type": "object",
@@ -11978,89 +11101,8 @@
           "https"
         ]
       },
-      "PutBucketLoggingRequest": {
-        "type": "object",
-        "required": [
-          "BucketLoggingStatus"
-        ],
-        "title": "PutBucketLoggingRequest",
-        "properties": {
-          "BucketLoggingStatus": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketLoggingStatus"
-              },
-              {
-                "description": "Container for logging status information."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutBucketMetricsConfigurationRequest": {
-        "type": "object",
-        "required": [
-          "MetricsConfiguration"
-        ],
-        "title": "PutBucketMetricsConfigurationRequest",
-        "properties": {
-          "MetricsConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsConfiguration"
-              },
-              {
-                "description": "Specifies the metrics configuration."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
       "SkipValidation": {
         "type": "boolean"
-      },
-      "PutBucketNotificationConfigurationRequest": {
-        "type": "object",
-        "required": [
-          "NotificationConfiguration"
-        ],
-        "title": "PutBucketNotificationConfigurationRequest",
-        "properties": {
-          "NotificationConfiguration": {
-            "$ref": "#/components/schemas/NotificationConfiguration"
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutBucketNotificationRequest": {
-        "type": "object",
-        "required": [
-          "NotificationConfiguration"
-        ],
-        "title": "PutBucketNotificationRequest",
-        "properties": {
-          "NotificationConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NotificationConfigurationDeprecated"
-              },
-              {
-                "description": "The container for the configuration."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
       },
       "PutBucketOwnershipControlsRequest": {
         "type": "object",
@@ -12082,25 +11124,6 @@
         },
         "xml": {
           "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutBucketPolicyRequest": {
-        "type": "object",
-        "required": [
-          "Policy"
-        ],
-        "title": "PutBucketPolicyRequest",
-        "properties": {
-          "Policy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Policy"
-              },
-              {
-                "description": "The bucket policy as a JSON document."
-              }
-            ]
-          }
         }
       },
       "PutBucketReplicationRequest": {
@@ -12319,63 +11342,6 @@
           "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
         }
       },
-      "PutObjectAclRequest": {
-        "type": "object",
-        "title": "PutObjectAclRequest",
-        "properties": {
-          "AccessControlPolicy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccessControlPolicy"
-              },
-              {
-                "description": "Contains the elements that set the ACL permissions for an object per grantee."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutObjectLegalHoldRequest": {
-        "type": "object",
-        "title": "PutObjectLegalHoldRequest",
-        "properties": {
-          "LegalHold": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectLockLegalHold"
-              },
-              {
-                "description": "Container element for the legal hold configuration you want to apply to the specified object."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutObjectLockConfigurationRequest": {
-        "type": "object",
-        "title": "PutObjectLockConfigurationRequest",
-        "properties": {
-          "ObjectLockConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectLockConfiguration"
-              },
-              {
-                "description": "The Object Lock configuration that you want to apply to the specified bucket."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
       "PutObjectRequest": {
         "type": "object",
         "title": "PutObjectRequest",
@@ -12438,28 +11404,6 @@
               },
               {
                 "description": "Container for the <code>TagSet</code> and <code>Tag</code> elements"
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
-      "PutPublicAccessBlockRequest": {
-        "type": "object",
-        "required": [
-          "PublicAccessBlockConfiguration"
-        ],
-        "title": "PutPublicAccessBlockRequest",
-        "properties": {
-          "PublicAccessBlockConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PublicAccessBlockConfiguration"
-              },
-              {
-                "description": "The <code>PublicAccessBlock</code> configuration that you want to apply to this Amazon S3 bucket. You can enable the configuration options in any combination. For more information about when Amazon S3 considers a bucket or object public, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html#access-control-block-public-access-policy-status\">The Meaning of \"Public\"</a> in the <i>Amazon S3 User Guide</i>."
               }
             ]
           }
