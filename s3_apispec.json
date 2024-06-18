@@ -868,15 +868,6 @@
             }
           },
           {
-            "name": "x-amz-website-redirect-location",
-            "in": "header",
-            "required": false,
-            "description": "If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "x-amz-server-side-encryption-customer-algorithm",
             "in": "header",
             "required": false,
@@ -1399,15 +1390,6 @@
                 "GLACIER_IR",
                 "SNOW"
               ]
-            }
-          },
-          {
-            "name": "x-amz-website-redirect-location",
-            "in": "header",
-            "required": false,
-            "description": "If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata.",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -2350,15 +2332,6 @@
                 "GLACIER_IR",
                 "SNOW"
               ]
-            }
-          },
-          {
-            "name": "x-amz-website-redirect-location",
-            "in": "header",
-            "required": false,
-            "description": "<p>If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata. For information about object metadata, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html\">Object Key and Metadata</a>.</p> <p>In the following example, the request header sets the redirect to an object (anotherPage.html) in the same bucket:</p> <p> <code>x-amz-website-redirect-location: /anotherPage.html</code> </p> <p>In the following example, the request header sets the object redirect to another website:</p> <p> <code>x-amz-website-redirect-location: http://www.example.com/</code> </p> <p>For more information about website hosting in Amazon S3, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html\">Hosting Websites on Amazon S3</a> and <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/how-to-page-redirect.html\">How to Configure Website Page Redirects</a>. </p>",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -3712,253 +3685,6 @@
         }
       ]
     },
-    "/{Bucket}/{Key}#select&select-type=2": {
-      "post": {
-        "operationId": "SelectObjectContent",
-        "description": "<p>This action filters the contents of an Amazon S3 object based on a simple structured query language (SQL) statement. In the request, along with the SQL expression, you must also specify a data serialization format (JSON, CSV, or Apache Parquet) of the object. Amazon S3 uses this format to parse object data into records, and returns only records that match the specified SQL expression. You must also specify the data serialization format for the response.</p> <p>This action is not supported by Amazon S3 on Outposts.</p> <p>For more information about Amazon S3 Select, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/selecting-content-from-objects.html\">Selecting Content from Objects</a> and <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-glacier-select-sql-reference-select.html\">SELECT Command</a> in the <i>Amazon S3 User Guide</i>.</p> <p>For more information about using SQL with Amazon S3 Select, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference.html\"> SQL Reference for Amazon S3 Select and S3 Glacier Select</a> in the <i>Amazon S3 User Guide</i>.</p> <p/> <p> <b>Permissions</b> </p> <p>You must have <code>s3:GetObject</code> permission for this operation. Amazon S3 Select does not support anonymous access. For more information about permissions, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/using-with-s3-actions.html\">Specifying Permissions in a Policy</a> in the <i>Amazon S3 User Guide</i>.</p> <p/> <p> <i>Object Data Formats</i> </p> <p>You can use Amazon S3 Select to query objects that have the following format properties:</p> <ul> <li> <p> <i>CSV, JSON, and Parquet</i> - Objects must be in CSV, JSON, or Parquet format.</p> </li> <li> <p> <i>UTF-8</i> - UTF-8 is the only encoding type Amazon S3 Select supports.</p> </li> <li> <p> <i>GZIP or BZIP2</i> - CSV and JSON files can be compressed using GZIP or BZIP2. GZIP and BZIP2 are the only compression formats that Amazon S3 Select supports for CSV and JSON files. Amazon S3 Select supports columnar compression for Parquet using GZIP or Snappy. Amazon S3 Select does not support whole-object compression for Parquet objects.</p> </li> <li> <p> <i>Server-side encryption</i> - Amazon S3 Select supports querying objects that are protected with server-side encryption.</p> <p>For objects that are encrypted with customer-provided encryption keys (SSE-C), you must use HTTPS, and you must use the headers that are documented in the <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html\">GetObject</a>. For more information about SSE-C, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html\">Server-Side Encryption (Using Customer-Provided Encryption Keys)</a> in the <i>Amazon S3 User Guide</i>.</p> <p>For objects that are encrypted with Amazon S3 managed encryption keys (SSE-S3) and Amazon Web Services KMS keys (SSE-KMS), server-side encryption is handled transparently, so you don't need to specify anything. For more information about server-side encryption, including SSE-S3 and SSE-KMS, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html\">Protecting Data Using Server-Side Encryption</a> in the <i>Amazon S3 User Guide</i>.</p> </li> </ul> <p> <b>Working with the Response Body</b> </p> <p>Given the response size is unknown, Amazon S3 Select streams the response as a series of messages and includes a <code>Transfer-Encoding</code> header with <code>chunked</code> as its value in the response. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTSelectObjectAppendix.html\">Appendix: SelectObjectContent Response</a>.</p> <p/> <p> <b>GetObject Support</b> </p> <p>The <code>SelectObjectContent</code> action does not support the following <code>GetObject</code> functionality. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html\">GetObject</a>.</p> <ul> <li> <p> <code>Range</code>: Although you can specify a scan range for an Amazon S3 Select request (see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_SelectObjectContent.html#AmazonS3-SelectObjectContent-request-ScanRange\">SelectObjectContentRequest - ScanRange</a> in the request parameters), you cannot specify the range of bytes of an object to return. </p> </li> <li> <p>GLACIER, DEEP_ARCHIVE and REDUCED_REDUNDANCY storage classes: You cannot specify the GLACIER, DEEP_ARCHIVE, or <code>REDUCED_REDUNDANCY</code> storage classes. For more information, about storage classes see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html#storage-class-intro\">Storage Classes</a> in the <i>Amazon S3 User Guide</i>.</p> </li> </ul> <p/> <p> <b>Special Errors</b> </p> <p>For a list of special errors for this operation, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html#SelectObjectContentErrorCodeList\">List of SELECT Object Content Error Codes</a> </p> <p class=\"title\"> <b>Related Resources</b> </p> <ul> <li> <p> <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html\">GetObject</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLifecycleConfiguration.html\">GetBucketLifecycleConfiguration</a> </p> </li> <li> <p> <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html\">PutBucketLifecycleConfiguration</a> </p> </li> </ul>",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/SelectObjectContentOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "The S3 bucket.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Key",
-            "in": "path",
-            "required": true,
-            "description": "The object key.",
-            "schema": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          {
-            "name": "x-amz-server-side-encryption-customer-algorithm",
-            "in": "header",
-            "required": false,
-            "description": "The server-side encryption (SSE) algorithm used to encrypt the object. This parameter is needed only when the object was created using a checksum algorithm. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html\">Protecting data using SSE-C keys</a> in the <i>Amazon S3 User Guide</i>.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-amz-server-side-encryption-customer-key",
-            "in": "header",
-            "required": false,
-            "description": "The server-side encryption (SSE) customer managed key. This parameter is needed only when the object was created using a checksum algorithm. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html\">Protecting data using SSE-C keys</a> in the <i>Amazon S3 User Guide</i>.",
-            "schema": {
-              "type": "string",
-              "format": "password"
-            }
-          },
-          {
-            "name": "x-amz-server-side-encryption-customer-key-MD5",
-            "in": "header",
-            "required": false,
-            "description": "The MD5 server-side encryption (SSE) customer managed key. This parameter is needed only when the object was created using a checksum algorithm. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html\">Protecting data using SSE-C keys</a> in the <i>Amazon S3 User Guide</i>.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-amz-expected-bucket-owner",
-            "in": "header",
-            "required": false,
-            "description": "The account ID of the expected bucket owner. If the bucket is owned by a different account, the request fails with the HTTP status code <code>403 Forbidden</code> (access denied).",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "select",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          },
-          {
-            "name": "select-type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "2"
-              ]
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "text/xml": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "Expression",
-                  "ExpressionType",
-                  "InputSerialization",
-                  "OutputSerialization"
-                ],
-                "properties": {
-                  "Expression": {
-                    "description": "The expression that is used to query the object.",
-                    "type": "string"
-                  },
-                  "ExpressionType": {
-                    "description": "The type of the provided expression (for example, SQL).",
-                    "type": "string",
-                    "enum": [
-                      "SQL"
-                    ]
-                  },
-                  "RequestProgress": {
-                    "description": "Container for specifying if periodic <code>QueryProgress</code> messages should be sent.",
-                    "type": "object",
-                    "properties": {
-                      "Enabled": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/EnableRequestProgress"
-                          },
-                          {
-                            "description": "Specifies whether periodic QueryProgress frames should be sent. Valid values: TRUE, FALSE. Default value: FALSE."
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "InputSerialization": {
-                    "description": "Describes the serialization format of the object.",
-                    "type": "object",
-                    "properties": {
-                      "CSV": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/CSVInput"
-                          },
-                          {
-                            "description": "Describes the serialization of a CSV-encoded object."
-                          }
-                        ]
-                      },
-                      "CompressionType": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/CompressionType"
-                          },
-                          {
-                            "description": "Specifies object's compression format. Valid values: NONE, GZIP, BZIP2. Default Value: NONE."
-                          }
-                        ]
-                      },
-                      "JSON": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/JSONInput"
-                          },
-                          {
-                            "description": "Specifies JSON as object's input serialization format."
-                          }
-                        ]
-                      },
-                      "Parquet": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/ParquetInput"
-                          },
-                          {
-                            "description": "Specifies Parquet as object's input serialization format."
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "OutputSerialization": {
-                    "description": "Describes how results of the Select job are serialized.",
-                    "type": "object",
-                    "properties": {
-                      "CSV": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/CSVOutput"
-                          },
-                          {
-                            "description": "Describes the serialization of CSV-encoded Select results."
-                          }
-                        ]
-                      },
-                      "JSON": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/JSONOutput"
-                          },
-                          {
-                            "description": "Specifies JSON as request's output serialization format."
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "ScanRange": {
-                    "description": "Specifies the byte range of the object to get the records from. A record is processed when its first byte is contained by the range. This parameter is optional, but when specified, it must not be empty. See RFC 2616, Section 14.35.1 about how to specify the start and end of the range.",
-                    "type": "object",
-                    "properties": {
-                      "Start": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/Start"
-                          },
-                          {
-                            "description": "Specifies the start of the byte range. This parameter is optional. Valid values: non-negative integers. The default value is 0. If only <code>start</code> is supplied, it means scan from that point to the end of the file. For example, <code>&lt;scanrange&gt;&lt;start&gt;50&lt;/start&gt;&lt;/scanrange&gt;</code> means scan from byte 50 until the end of the file."
-                          }
-                        ]
-                      },
-                      "End": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/End"
-                          },
-                          {
-                            "description": "Specifies the end of the byte range. This parameter is optional. Valid values: non-negative integers. The default value is one less than the size of the object being queried. If only the End parameter is supplied, it is interpreted to mean scan the last N bytes of the file. For example, <code>&lt;scanrange&gt;&lt;end&gt;50&lt;/end&gt;&lt;/scanrange&gt;</code> means scan the last 50 bytes."
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
     "/{Bucket}/{Key}#partNumber&uploadId": {
       "put": {
         "operationId": "UploadPart",
@@ -4665,114 +4391,6 @@
       "Quiet": {
         "type": "boolean"
       },
-      "NotificationConfigurationDeprecated": {
-        "type": "object",
-        "example": {
-          "QueueConfiguration": {
-            "Event": "s3:ObjectCreated:Put",
-            "Events": [
-              "s3:ObjectCreated:Put"
-            ],
-            "Id": "MDQ2OGQ4NDEtOTBmNi00YTM4LTk0NzYtZDIwN2I3NWQ1NjIx",
-            "Queue": "arn:aws:sqs:us-east-1:acct-id:S3ObjectCreatedEventQueue"
-          },
-          "TopicConfiguration": {
-            "Event": "s3:ObjectCreated:Copy",
-            "Events": [
-              "s3:ObjectCreated:Copy"
-            ],
-            "Id": "YTVkMWEzZGUtNTY1NS00ZmE2LWJjYjktMmRlY2QwODFkNTJi",
-            "Topic": "arn:aws:sns:us-east-1:acct-id:S3ObjectCreatedEventTopic"
-          }
-        },
-        "properties": {
-          "TopicConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TopicConfigurationDeprecated"
-              },
-              {
-                "description": "This data type is deprecated. A container for specifying the configuration for publication of messages to an Amazon Simple Notification Service (Amazon SNS) topic when Amazon S3 detects specified events. "
-              }
-            ]
-          },
-          "QueueConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QueueConfigurationDeprecated"
-              },
-              {
-                "description": "This data type is deprecated. This data type specifies the configuration for publishing messages to an Amazon Simple Queue Service (Amazon SQS) queue when Amazon S3 detects specified events. "
-              }
-            ]
-          },
-          "CloudFunctionConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CloudFunctionConfiguration"
-              },
-              {
-                "description": "Container for specifying the Lambda notification configuration."
-              }
-            ]
-          }
-        }
-      },
-      "NotificationConfiguration": {
-        "type": "object",
-        "properties": {
-          "TopicConfigurations": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TopicConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "TopicConfiguration"
-                },
-                "description": "The topic to which notifications are sent and the events for which notifications are generated."
-              }
-            ]
-          },
-          "QueueConfigurations": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QueueConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "QueueConfiguration"
-                },
-                "description": "The Amazon Simple Queue Service queues to publish messages to and the events for which to publish messages."
-              }
-            ]
-          },
-          "LambdaFunctionConfigurations": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LambdaFunctionConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "CloudFunctionConfiguration"
-                },
-                "description": "Describes the Lambda functions to invoke and the events for which to invoke them."
-              }
-            ]
-          },
-          "EventBridgeConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventBridgeConfiguration"
-              },
-              {
-                "description": "Enables delivery of events to Amazon EventBridge."
-              }
-            ]
-          }
-        },
-        "description": "A container for specifying the notification configuration of the bucket. If this element is empty, notifications are turned off for the bucket."
-      },
       "GetBucketOwnershipControlsOutput": {
         "type": "object",
         "properties": {
@@ -4785,29 +4403,6 @@
                 "description": "The <code>OwnershipControls</code> (BucketOwnerEnforced, BucketOwnerPreferred, or ObjectWriter) currently in effect for this Amazon S3 bucket."
               }
             ]
-          }
-        }
-      },
-      "GetBucketReplicationOutput": {
-        "type": "object",
-        "example": {
-          "ReplicationConfiguration": {
-            "Role": "arn:aws:iam::acct-id:role/example-role",
-            "Rules": [
-              {
-                "Destination": {
-                  "Bucket": "arn:aws:s3:::destination-bucket"
-                },
-                "ID": "MWIwNTkwZmItMTE3MS00ZTc3LWJkZDEtNzRmODQwYzc1OTQy",
-                "Prefix": "Tax",
-                "Status": "Enabled"
-              }
-            ]
-          }
-        },
-        "properties": {
-          "ReplicationConfiguration": {
-            "$ref": "#/components/schemas/ReplicationConfiguration"
           }
         }
       },
@@ -4873,72 +4468,6 @@
               },
               {
                 "description": "The versioning state of the bucket."
-              }
-            ]
-          },
-          "MFADelete": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MFADeleteStatus"
-              },
-              {
-                "xml": {
-                  "name": "MfaDelete"
-                },
-                "description": "Specifies whether MFA delete is enabled in the bucket versioning configuration. This element is only returned if the bucket has been configured with MFA delete. If the bucket has never been so configured, this element is not returned."
-              }
-            ]
-          }
-        }
-      },
-      "GetBucketWebsiteOutput": {
-        "type": "object",
-        "example": {
-          "ErrorDocument": {
-            "Key": "error.html"
-          },
-          "IndexDocument": {
-            "Suffix": "index.html"
-          }
-        },
-        "properties": {
-          "RedirectAllRequestsTo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RedirectAllRequestsTo"
-              },
-              {
-                "description": "Specifies the redirect behavior of all requests to a website endpoint of an Amazon S3 bucket."
-              }
-            ]
-          },
-          "IndexDocument": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndexDocument"
-              },
-              {
-                "description": "The name of the index document for the website (for example <code>index.html</code>)."
-              }
-            ]
-          },
-          "ErrorDocument": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorDocument"
-              },
-              {
-                "description": "The object key name of the website error document to use for 4XX class errors."
-              }
-            ]
-          },
-          "RoutingRules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RoutingRules"
-              },
-              {
-                "description": "Rules that define when a redirect is applied and the redirect behavior."
               }
             ]
           }
@@ -5117,21 +4646,6 @@
           "ObjectSize"
         ]
       },
-      "GetObjectLegalHoldOutput": {
-        "type": "object",
-        "properties": {
-          "LegalHold": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectLockLegalHold"
-              },
-              {
-                "description": "The current legal hold status for the specified object."
-              }
-            ]
-          }
-        }
-      },
       "GetObjectLockConfigurationOutput": {
         "type": "object",
         "properties": {
@@ -5142,83 +4656,6 @@
               },
               {
                 "description": "The specified bucket's Object Lock configuration."
-              }
-            ]
-          }
-        }
-      },
-      "GetObjectRetentionOutput": {
-        "type": "object",
-        "properties": {
-          "Retention": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectLockRetention"
-              },
-              {
-                "description": "The container element for an object's retention settings."
-              }
-            ]
-          }
-        }
-      },
-      "GetObjectTaggingOutput": {
-        "type": "object",
-        "required": [
-          "TagSet"
-        ],
-        "example": {
-          "TagSet": [
-            {
-              "Key": "Key4",
-              "Value": "Value4"
-            },
-            {
-              "Key": "Key3",
-              "Value": "Value3"
-            }
-          ],
-          "VersionId": "null"
-        },
-        "properties": {
-          "TagSet": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "description": "Contains the tag set."
-              }
-            ]
-          }
-        }
-      },
-      "GetObjectTorrentOutput": {
-        "type": "object",
-        "example": {},
-        "properties": {
-          "Body": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Body"
-              },
-              {
-                "description": "A Bencoded dictionary as defined by the BitTorrent specification"
-              }
-            ]
-          }
-        }
-      },
-      "GetPublicAccessBlockOutput": {
-        "type": "object",
-        "properties": {
-          "PublicAccessBlockConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PublicAccessBlockConfiguration"
-              },
-              {
-                "description": "The <code>PublicAccessBlock</code> configuration currently in effect for this Amazon S3 bucket."
               }
             ]
           }
@@ -5247,198 +4684,6 @@
                   "name": "x-amz-meta-"
                 },
                 "description": "A map of metadata to store with the object in S3."
-              }
-            ]
-          }
-        }
-      },
-      "ListBucketAnalyticsConfigurationsOutput": {
-        "type": "object",
-        "properties": {
-          "IsTruncated": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsTruncated"
-              },
-              {
-                "description": "Indicates whether the returned list of analytics configurations is complete. A value of true indicates that the list is not complete and the NextContinuationToken will be provided for a subsequent request."
-              }
-            ]
-          },
-          "ContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Token"
-              },
-              {
-                "description": "The marker that is used as a starting point for this analytics configuration list response. This value is present if it was sent in the request."
-              }
-            ]
-          },
-          "NextContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NextToken"
-              },
-              {
-                "description": " <code>NextContinuationToken</code> is sent when <code>isTruncated</code> is true, which indicates that there are more analytics configurations to list. The next request must include this <code>NextContinuationToken</code>. The token is obfuscated and is not a usable value."
-              }
-            ]
-          },
-          "AnalyticsConfigurationList": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "AnalyticsConfiguration"
-                },
-                "description": "The list of analytics configurations for a bucket."
-              }
-            ]
-          }
-        }
-      },
-      "ListBucketIntelligentTieringConfigurationsOutput": {
-        "type": "object",
-        "properties": {
-          "IsTruncated": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsTruncated"
-              },
-              {
-                "description": "Indicates whether the returned list of analytics configurations is complete. A value of <code>true</code> indicates that the list is not complete and the <code>NextContinuationToken</code> will be provided for a subsequent request."
-              }
-            ]
-          },
-          "ContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Token"
-              },
-              {
-                "description": "The <code>ContinuationToken</code> that represents a placeholder from where this request should begin."
-              }
-            ]
-          },
-          "NextContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NextToken"
-              },
-              {
-                "description": "The marker used to continue this inventory configuration listing. Use the <code>NextContinuationToken</code> from this response to continue the listing in a subsequent request. The continuation token is an opaque value that Amazon S3 understands."
-              }
-            ]
-          },
-          "IntelligentTieringConfigurationList": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "IntelligentTieringConfiguration"
-                },
-                "description": "The list of S3 Intelligent-Tiering configurations for a bucket."
-              }
-            ]
-          }
-        }
-      },
-      "ListBucketInventoryConfigurationsOutput": {
-        "type": "object",
-        "properties": {
-          "ContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Token"
-              },
-              {
-                "description": "If sent in the request, the marker that is used as a starting point for this inventory configuration list response."
-              }
-            ]
-          },
-          "InventoryConfigurationList": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "InventoryConfiguration"
-                },
-                "description": "The list of inventory configurations for a bucket."
-              }
-            ]
-          },
-          "IsTruncated": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsTruncated"
-              },
-              {
-                "description": "Tells whether the returned list of inventory configurations is complete. A value of true indicates that the list is not complete and the NextContinuationToken is provided for a subsequent request."
-              }
-            ]
-          },
-          "NextContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NextToken"
-              },
-              {
-                "description": "The marker used to continue this inventory configuration listing. Use the <code>NextContinuationToken</code> from this response to continue the listing in a subsequent request. The continuation token is an opaque value that Amazon S3 understands."
-              }
-            ]
-          }
-        }
-      },
-      "ListBucketMetricsConfigurationsOutput": {
-        "type": "object",
-        "properties": {
-          "IsTruncated": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsTruncated"
-              },
-              {
-                "description": "Indicates whether the returned list of metrics configurations is complete. A value of true indicates that the list is not complete and the NextContinuationToken will be provided for a subsequent request."
-              }
-            ]
-          },
-          "ContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Token"
-              },
-              {
-                "description": "The marker that is used as a starting point for this metrics configuration list response. This value is present if it was sent in the request."
-              }
-            ]
-          },
-          "NextContinuationToken": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NextToken"
-              },
-              {
-                "description": "The marker used to continue a metrics configuration listing that has been truncated. Use the <code>NextContinuationToken</code> from a previously truncated list response to continue the listing. The continuation token is an opaque value that Amazon S3 understands."
-              }
-            ]
-          },
-          "MetricsConfigurationList": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsConfigurationList"
-              },
-              {
-                "xml": {
-                  "name": "MetricsConfiguration"
-                },
-                "description": "The list of metrics configurations for a bucket."
               }
             ]
           }
@@ -6302,439 +5547,8 @@
         },
         "description": "Container for the owner's display name and ID."
       },
-      "StorageClassAnalysis": {
-        "type": "object",
-        "properties": {
-          "DataExport": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StorageClassAnalysisDataExport"
-              },
-              {
-                "description": "Specifies how data related to the storage class analysis for an Amazon S3 bucket should be exported."
-              }
-            ]
-          }
-        },
-        "description": "Specifies data related to access patterns to be collected and made available to analyze the tradeoffs between different storage classes for an Amazon S3 bucket."
-      },
-      "CORSRules": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/CORSRule"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "ServerSideEncryptionRules": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ServerSideEncryptionRule"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "IntelligentTieringId": {
-        "type": "string"
-      },
-      "IntelligentTieringFilter": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "<p>An object key name prefix that identifies the subset of objects to which the rule applies.</p> <important> <p>Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-xml-related-constraints\"> XML related object key constraints</a>.</p> </important>"
-              }
-            ]
-          },
-          "Tag": {
-            "$ref": "#/components/schemas/Tag"
-          },
-          "And": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringAndOperator"
-              },
-              {
-                "description": "A conjunction (logical AND) of predicates, which is used in evaluating a metrics filter. The operator must have at least two predicates, and an object must match all of the predicates in order for the filter to apply."
-              }
-            ]
-          }
-        },
-        "description": "The <code>Filter</code> is used to identify objects that the S3 Intelligent-Tiering configuration applies to."
-      },
-      "IntelligentTieringStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Disabled"
-        ]
-      },
-      "TieringList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Tiering"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "InventoryDestination": {
-        "type": "object",
-        "required": [
-          "S3BucketDestination"
-        ],
-        "properties": {
-          "S3BucketDestination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryS3BucketDestination"
-              },
-              {
-                "description": "Contains the bucket name, file format, bucket owner (optional), and prefix (optional) where inventory results are published."
-              }
-            ]
-          }
-        },
-        "description": "Specifies the inventory configuration for an Amazon S3 bucket."
-      },
       "IsEnabled": {
         "type": "boolean"
-      },
-      "InventoryFilter": {
-        "type": "object",
-        "required": [
-          "Prefix"
-        ],
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix that an object must have to be included in the inventory results."
-              }
-            ]
-          }
-        },
-        "description": "Specifies an inventory filter. The inventory only includes objects that meet the filter's criteria."
-      },
-      "InventoryId": {
-        "type": "string"
-      },
-      "InventoryIncludedObjectVersions": {
-        "type": "string",
-        "enum": [
-          "All",
-          "Current"
-        ]
-      },
-      "InventoryOptionalFields": {
-        "type": "array",
-        "items": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/InventoryOptionalField"
-            },
-            {
-              "xml": {
-                "name": "Field"
-              }
-            }
-          ]
-        }
-      },
-      "InventorySchedule": {
-        "type": "object",
-        "required": [
-          "Frequency"
-        ],
-        "properties": {
-          "Frequency": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryFrequency"
-              },
-              {
-                "description": "Specifies how frequently inventory results are produced."
-              }
-            ]
-          }
-        },
-        "description": "Specifies the schedule for generating inventory results."
-      },
-      "Rules": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Rule"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "LoggingEnabled": {
-        "type": "object",
-        "required": [
-          "TargetBucket",
-          "TargetPrefix"
-        ],
-        "properties": {
-          "TargetBucket": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TargetBucket"
-              },
-              {
-                "description": "Specifies the bucket where you want Amazon S3 to store server access logs. You can have your logs delivered to any bucket that you own, including the same bucket that is being logged. You can also configure multiple buckets to deliver their logs to the same target bucket. In this case, you should choose a different <code>TargetPrefix</code> for each source bucket so that the delivered log files can be distinguished by key."
-              }
-            ]
-          },
-          "TargetGrants": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TargetGrants"
-              },
-              {
-                "description": "<p>Container for granting information.</p> <p>Buckets that use the bucket owner enforced setting for Object Ownership don't support target grants. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html#grant-log-delivery-permissions-general\">Permissions for server access log delivery</a> in the <i>Amazon S3 User Guide</i>.</p>"
-              }
-            ]
-          },
-          "TargetPrefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TargetPrefix"
-              },
-              {
-                "description": "A prefix for all log object keys. If you store log files from multiple Amazon S3 buckets in a single bucket, you can use a prefix to distinguish which log files came from which bucket."
-              }
-            ]
-          }
-        },
-        "description": "Describes where logs are stored and the prefix that Amazon S3 assigns to all log object keys for a bucket. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTlogging.html\">PUT Bucket logging</a> in the <i>Amazon S3 API Reference</i>."
-      },
-      "MetricsId": {
-        "type": "string"
-      },
-      "MetricsFilter": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix used when evaluating a metrics filter."
-              }
-            ]
-          },
-          "Tag": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tag"
-              },
-              {
-                "description": "The tag used when evaluating a metrics filter."
-              }
-            ]
-          },
-          "AccessPointArn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccessPointArn"
-              },
-              {
-                "description": "The access point ARN used when evaluating a metrics filter."
-              }
-            ]
-          },
-          "And": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsAndOperator"
-              },
-              {
-                "description": "A conjunction (logical AND) of predicates, which is used in evaluating a metrics filter. The operator must have at least two predicates, and an object must match all of the predicates in order for the filter to apply."
-              }
-            ]
-          }
-        },
-        "description": "Specifies a metrics configuration filter. The metrics configuration only includes objects that meet the filter's criteria. A filter must be a prefix, an object tag, an access point ARN, or a conjunction (MetricsAndOperator). For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketMetricsConfiguration.html\">PutBucketMetricsConfiguration</a>."
-      },
-      "TopicConfigurationDeprecated": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "A collection of events related to objects"
-              }
-            ]
-          },
-          "Event": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Event"
-              },
-              {
-                "deprecated": true,
-                "description": "Bucket event for which to send notifications."
-              }
-            ]
-          },
-          "Topic": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TopicArn"
-              },
-              {
-                "description": "Amazon SNS topic to which Amazon S3 will publish a message to report the specified events for the bucket."
-              }
-            ]
-          }
-        },
-        "description": "A container for specifying the configuration for publication of messages to an Amazon Simple Notification Service (Amazon SNS) topic when Amazon S3 detects specified events. This data type is deprecated. Use <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_TopicConfiguration.html\">TopicConfiguration</a> instead."
-      },
-      "QueueConfigurationDeprecated": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "Event": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Event"
-              },
-              {
-                "deprecated": true
-              }
-            ]
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "A collection of bucket events for which to send notifications."
-              }
-            ]
-          },
-          "Queue": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QueueArn"
-              },
-              {
-                "description": "The Amazon Resource Name (ARN) of the Amazon SQS queue to which Amazon S3 publishes a message when it detects events of the specified type. "
-              }
-            ]
-          }
-        },
-        "description": "This data type is deprecated. Use <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_QueueConfiguration.html\">QueueConfiguration</a> for the same purposes. This data type specifies the configuration for publishing messages to an Amazon Simple Queue Service (Amazon SQS) queue when Amazon S3 detects specified events. "
-      },
-      "CloudFunctionConfiguration": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "Event": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Event"
-              },
-              {
-                "deprecated": true
-              }
-            ]
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "Bucket events for which to send notifications."
-              }
-            ]
-          },
-          "CloudFunction": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CloudFunction"
-              },
-              {
-                "description": "Lambda cloud function ARN that Amazon S3 can invoke when it detects events of the specified type."
-              }
-            ]
-          },
-          "InvocationRole": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CloudFunctionInvocationRole"
-              },
-              {
-                "description": "The role supporting the invocation of the Lambda function"
-              }
-            ]
-          }
-        },
-        "description": "Container for specifying the Lambda notification configuration."
-      },
-      "TopicConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/TopicConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "QueueConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/QueueConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "LambdaFunctionConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/LambdaFunctionConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "EventBridgeConfiguration": {
-        "type": "object",
-        "properties": {},
-        "description": "A container for specifying the configuration for Amazon EventBridge."
       },
       "OwnershipControlsRules": {
         "type": "array",
@@ -6747,15 +5561,6 @@
       },
       "Role": {
         "type": "string"
-      },
-      "ReplicationRules": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ReplicationRule"
-        },
-        "xml": {
-          "wrapped": false
-        }
       },
       "Payer": {
         "type": "string",
@@ -6883,11 +5688,6 @@
         },
         "properties": {}
       },
-      "PutObjectAclOutput": {
-        "type": "object",
-        "example": {},
-        "properties": {}
-      },
       "PutObjectLockConfigurationOutput": {
         "type": "object",
         "properties": {}
@@ -6913,10 +5713,6 @@
           }
         },
         "description": "The container element for an Object Lock rule."
-      },
-      "PutObjectRetentionOutput": {
-        "type": "object",
-        "properties": {}
       },
       "ObjectLockRetentionMode": {
         "type": "string",
@@ -7034,38 +5830,6 @@
           }
         },
         "description": "Describes the parameters for Select job types."
-      },
-      "OutputLocation": {
-        "type": "object",
-        "properties": {
-          "S3": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/S3Location"
-              },
-              {
-                "description": "Describes an S3 location that will receive the results of the restore request."
-              }
-            ]
-          }
-        },
-        "description": "Describes the location where the restore job's output is stored."
-      },
-      "ObjectAlreadyInActiveTierError": {},
-      "SelectObjectContentOutput": {
-        "type": "object",
-        "properties": {
-          "Payload": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SelectObjectContentEventStream"
-              },
-              {
-                "description": "The array of results."
-              }
-            ]
-          }
-        }
       },
       "EnableRequestProgress": {
         "type": "boolean"
@@ -7411,12 +6175,6 @@
         },
         "description": "A container of a key value name pair."
       },
-      "AnalyticsS3ExportFileFormat": {
-        "type": "string",
-        "enum": [
-          "CSV"
-        ]
-      },
       "Body": {
         "type": "string"
       },
@@ -7468,9 +6226,6 @@
           ]
         }
       },
-      "BypassGovernanceRetention": {
-        "type": "boolean"
-      },
       "BytesProcessed": {
         "type": "integer"
       },
@@ -7479,28 +6234,6 @@
       },
       "BytesScanned": {
         "type": "integer"
-      },
-      "CORSConfiguration": {
-        "type": "object",
-        "required": [
-          "CORSRules"
-        ],
-        "properties": {
-          "CORSRules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CORSRules"
-              },
-              {
-                "xml": {
-                  "name": "CORSRule"
-                },
-                "description": "A set of origins and methods (cross-origin access that you want to allow). You can add up to 100 rules to the configuration."
-              }
-            ]
-          }
-        },
-        "description": "Describes the cross-origin access configuration for objects in an Amazon S3 bucket. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html\">Enabling Cross-Origin Resource Sharing</a> in the <i>Amazon S3 User Guide</i>."
       },
       "ID": {
         "type": "string"
@@ -7516,88 +6249,6 @@
       },
       "MaxAgeSeconds": {
         "type": "integer"
-      },
-      "CORSRule": {
-        "type": "object",
-        "required": [
-          "AllowedMethods",
-          "AllowedOrigins"
-        ],
-        "properties": {
-          "ID": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ID"
-              },
-              {
-                "description": "Unique identifier for the rule. The value cannot be longer than 255 characters."
-              }
-            ]
-          },
-          "AllowedHeaders": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AllowedHeaders"
-              },
-              {
-                "xml": {
-                  "name": "AllowedHeader"
-                },
-                "description": "Headers that are specified in the <code>Access-Control-Request-Headers</code> header. These headers are allowed in a preflight OPTIONS request. In response to any preflight OPTIONS request, Amazon S3 returns any requested headers that are allowed."
-              }
-            ]
-          },
-          "AllowedMethods": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AllowedMethods"
-              },
-              {
-                "xml": {
-                  "name": "AllowedMethod"
-                },
-                "description": "An HTTP method that you allow the origin to execute. Valid values are <code>GET</code>, <code>PUT</code>, <code>HEAD</code>, <code>POST</code>, and <code>DELETE</code>."
-              }
-            ]
-          },
-          "AllowedOrigins": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AllowedOrigins"
-              },
-              {
-                "xml": {
-                  "name": "AllowedOrigin"
-                },
-                "description": "One or more origins you want customers to be able to access the bucket from."
-              }
-            ]
-          },
-          "ExposeHeaders": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExposeHeaders"
-              },
-              {
-                "xml": {
-                  "name": "ExposeHeader"
-                },
-                "description": "One or more headers in the response that you want customers to be able to access from their applications (for example, from a JavaScript <code>XMLHttpRequest</code> object)."
-              }
-            ]
-          },
-          "MaxAgeSeconds": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MaxAgeSeconds"
-              },
-              {
-                "description": "The time in seconds that your browser is to cache the preflight response for the specified resource."
-              }
-            ]
-          }
-        },
-        "description": "Specifies a cross-origin access rule for an Amazon S3 bucket."
       },
       "FileHeaderInfo": {
         "type": "string",
@@ -7717,52 +6368,6 @@
       "CloudFunction": {
         "type": "string"
       },
-      "NotificationId": {
-        "type": "string",
-        "description": "An optional unique identifier for configurations in a notification configuration. If you don't provide one, Amazon S3 will assign an ID."
-      },
-      "Event": {
-        "type": "string",
-        "enum": [
-          "s3:ReducedRedundancyLostObject",
-          "s3:ObjectCreated:*",
-          "s3:ObjectCreated:Put",
-          "s3:ObjectCreated:Post",
-          "s3:ObjectCreated:Copy",
-          "s3:ObjectCreated:CompleteMultipartUpload",
-          "s3:ObjectRemoved:*",
-          "s3:ObjectRemoved:Delete",
-          "s3:ObjectRemoved:DeleteMarkerCreated",
-          "s3:ObjectRestore:*",
-          "s3:ObjectRestore:Post",
-          "s3:ObjectRestore:Completed",
-          "s3:Replication:*",
-          "s3:Replication:OperationFailedReplication",
-          "s3:Replication:OperationNotTracked",
-          "s3:Replication:OperationMissedThreshold",
-          "s3:Replication:OperationReplicatedAfterThreshold",
-          "s3:ObjectRestore:Delete",
-          "s3:LifecycleTransition",
-          "s3:IntelligentTiering",
-          "s3:ObjectAcl:Put",
-          "s3:LifecycleExpiration:*",
-          "s3:LifecycleExpiration:Delete",
-          "s3:LifecycleExpiration:DeleteMarkerCreated",
-          "s3:ObjectTagging:*",
-          "s3:ObjectTagging:Put",
-          "s3:ObjectTagging:Delete"
-        ],
-        "description": "The bucket event for which to send notifications."
-      },
-      "EventList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Event"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
       "CloudFunctionInvocationRole": {
         "type": "string"
       },
@@ -7803,19 +6408,8 @@
       "ETag": {
         "type": "string"
       },
-      "ServerSideEncryption": {
-        "type": "string",
-        "enum": [
-          "AES256",
-          "aws:kms"
-        ]
-      },
       "ObjectVersionId": {
         "type": "string"
-      },
-      "SSEKMSKeyId": {
-        "type": "string",
-        "format": "password"
       },
       "CompletedMultipartUpload": {
         "type": "object",
@@ -7835,16 +6429,6 @@
           }
         },
         "description": "The container for the completed multipart upload details."
-      },
-      "SSECustomerAlgorithm": {
-        "type": "string"
-      },
-      "SSECustomerKey": {
-        "type": "string",
-        "format": "password"
-      },
-      "SSECustomerKeyMD5": {
-        "type": "string"
       },
       "CompleteMultipartUploadRequest": {
         "type": "object",
@@ -8071,18 +6655,6 @@
         "type": "string",
         "format": "password"
       },
-      "ObjectCannedACL": {
-        "type": "string",
-        "enum": [
-          "private",
-          "public-read",
-          "public-read-write",
-          "authenticated-read",
-          "aws-exec-read",
-          "bucket-owner-read",
-          "bucket-owner-full-control"
-        ]
-      },
       "CopySource": {
         "type": "string",
         "pattern": "\\/.+\\/.+"
@@ -8130,37 +6702,6 @@
           "COPY",
           "REPLACE"
         ]
-      },
-      "StorageClass": {
-        "type": "string",
-        "enum": [
-          "STANDARD",
-          "REDUCED_REDUNDANCY",
-          "STANDARD_IA",
-          "ONEZONE_IA",
-          "INTELLIGENT_TIERING",
-          "GLACIER",
-          "DEEP_ARCHIVE",
-          "OUTPOSTS",
-          "GLACIER_IR",
-          "SNOW"
-        ]
-      },
-      "WebsiteRedirectLocation": {
-        "type": "string"
-      },
-      "CopySourceSSECustomerAlgorithm": {
-        "type": "string"
-      },
-      "CopySourceSSECustomerKey": {
-        "type": "string",
-        "format": "password"
-      },
-      "CopySourceSSECustomerKeyMD5": {
-        "type": "string"
-      },
-      "TaggingHeader": {
-        "type": "string"
       },
       "ObjectLockMode": {
         "type": "string",
@@ -8405,31 +6946,6 @@
         },
         "description": "Container for the objects to delete."
       },
-      "DeleteBucketAnalyticsConfigurationRequest": {
-        "type": "object",
-        "title": "DeleteBucketAnalyticsConfigurationRequest",
-        "properties": {}
-      },
-      "DeleteBucketCorsRequest": {
-        "type": "object",
-        "title": "DeleteBucketCorsRequest",
-        "properties": {}
-      },
-      "DeleteBucketEncryptionRequest": {
-        "type": "object",
-        "title": "DeleteBucketEncryptionRequest",
-        "properties": {}
-      },
-      "DeleteBucketOwnershipControlsRequest": {
-        "type": "object",
-        "title": "DeleteBucketOwnershipControlsRequest",
-        "properties": {}
-      },
-      "DeleteBucketPolicyRequest": {
-        "type": "object",
-        "title": "DeleteBucketPolicyRequest",
-        "properties": {}
-      },
       "DeleteBucketReplicationRequest": {
         "type": "object",
         "title": "DeleteBucketReplicationRequest",
@@ -8438,16 +6954,6 @@
       "DeleteBucketRequest": {
         "type": "object",
         "title": "DeleteBucketRequest",
-        "properties": {}
-      },
-      "DeleteBucketTaggingRequest": {
-        "type": "object",
-        "title": "DeleteBucketTaggingRequest",
-        "properties": {}
-      },
-      "DeleteBucketWebsiteRequest": {
-        "type": "object",
-        "title": "DeleteBucketWebsiteRequest",
         "properties": {}
       },
       "DeleteMarker": {
@@ -8547,17 +7053,9 @@
           "wrapped": false
         }
       },
-      "MFA": {
-        "type": "string"
-      },
       "DeleteObjectRequest": {
         "type": "object",
         "title": "DeleteObjectRequest",
-        "properties": {}
-      },
-      "DeleteObjectTaggingRequest": {
-        "type": "object",
-        "title": "DeleteObjectTaggingRequest",
         "properties": {}
       },
       "DeletedObjects": {
@@ -8654,160 +7152,6 @@
       "Delimiter": {
         "type": "string"
       },
-      "EncryptionConfiguration": {
-        "type": "object",
-        "properties": {
-          "ReplicaKmsKeyID": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicaKmsKeyID"
-              },
-              {
-                "description": "Specifies the ID (Key ARN or Alias ARN) of the customer managed Amazon Web Services KMS key stored in Amazon Web Services Key Management Service (KMS) for the destination bucket. Amazon S3 uses this key to encrypt replica objects. Amazon S3 only supports symmetric, customer managed KMS keys. For more information, see <a href=\"https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\">Using symmetric and asymmetric keys</a> in the <i>Amazon Web Services Key Management Service Developer Guide</i>."
-              }
-            ]
-          }
-        },
-        "description": "Specifies encryption-related information for an Amazon S3 bucket that is a destination for replicated objects."
-      },
-      "ReplicationTime": {
-        "type": "object",
-        "required": [
-          "Status",
-          "Time"
-        ],
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationTimeStatus"
-              },
-              {
-                "description": " Specifies whether the replication time is enabled. "
-              }
-            ]
-          },
-          "Time": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationTimeValue"
-              },
-              {
-                "description": " A container specifying the time by which replication should be complete for all objects and operations on objects. "
-              }
-            ]
-          }
-        },
-        "description": " A container specifying S3 Replication Time Control (S3 RTC) related information, including whether S3 RTC is enabled and the time when all objects and operations on objects must be replicated. Must be specified together with a <code>Metrics</code> block. "
-      },
-      "Metrics": {
-        "type": "object",
-        "required": [
-          "Status"
-        ],
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MetricsStatus"
-              },
-              {
-                "description": " Specifies whether the replication metrics are enabled. "
-              }
-            ]
-          },
-          "EventThreshold": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationTimeValue"
-              },
-              {
-                "description": " A container specifying the time threshold for emitting the <code>s3:Replication:OperationMissedThreshold</code> event. "
-              }
-            ]
-          }
-        },
-        "description": " A container specifying replication metrics-related settings enabling replication metrics and events."
-      },
-      "Destination": {
-        "type": "object",
-        "required": [
-          "Bucket"
-        ],
-        "properties": {
-          "Bucket": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketName"
-              },
-              {
-                "description": " The Amazon Resource Name (ARN) of the bucket where you want Amazon S3 to store the results."
-              }
-            ]
-          },
-          "Account": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountId"
-              },
-              {
-                "description": "Destination bucket owner account ID. In a cross-account scenario, if you direct Amazon S3 to change replica ownership to the Amazon Web Services account that owns the destination bucket by specifying the <code>AccessControlTranslation</code> property, this is the account ID of the destination bucket owner. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-change-owner.html\">Replication Additional Configuration: Changing the Replica Owner</a> in the <i>Amazon S3 User Guide</i>."
-              }
-            ]
-          },
-          "StorageClass": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StorageClass"
-              },
-              {
-                "description": "<p> The storage class to use when replicating objects, such as S3 Standard or reduced redundancy. By default, Amazon S3 uses the storage class of the source object to create the object replica. </p> <p>For valid values, see the <code>StorageClass</code> element of the <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTreplication.html\">PUT Bucket replication</a> action in the <i>Amazon S3 API Reference</i>.</p>"
-              }
-            ]
-          },
-          "AccessControlTranslation": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccessControlTranslation"
-              },
-              {
-                "description": "Specify this only in a cross-account scenario (where source and destination bucket owners are not the same), and you want to change replica ownership to the Amazon Web Services account that owns the destination bucket. If this is not specified in the replication configuration, the replicas are owned by same Amazon Web Services account that owns the source object."
-              }
-            ]
-          },
-          "EncryptionConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EncryptionConfiguration"
-              },
-              {
-                "description": "A container that provides information about encryption. If <code>SourceSelectionCriteria</code> is specified, you must specify this element."
-              }
-            ]
-          },
-          "ReplicationTime": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationTime"
-              },
-              {
-                "description": " A container specifying S3 Replication Time Control (S3 RTC), including whether S3 RTC is enabled and the time when all objects and operations on objects must be replicated. Must be specified together with a <code>Metrics</code> block. "
-              }
-            ]
-          },
-          "Metrics": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Metrics"
-              },
-              {
-                "description": " A container specifying replication metrics-related settings enabling replication metrics and events. "
-              }
-            ]
-          }
-        },
-        "description": "Specifies information about where to publish analysis or configuration results for an Amazon S3 bucket and S3 Replication Time Control (S3 RTC)."
-      },
       "DisplayName": {
         "type": "string"
       },
@@ -8820,51 +7164,6 @@
           "url"
         ],
         "description": "Requests Amazon S3 to encode the object keys in the response and specifies the encoding method to use. An object key may contain any Unicode character; however, XML 1.0 parser cannot parse some characters, such as characters with an ASCII value from 0 to 10. For characters that are not supported in XML 1.0, you can add this parameter to request that Amazon S3 encode the keys in the response."
-      },
-      "KMSContext": {
-        "type": "string"
-      },
-      "Encryption": {
-        "type": "object",
-        "required": [
-          "EncryptionType"
-        ],
-        "properties": {
-          "EncryptionType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ServerSideEncryption"
-              },
-              {
-                "description": "The server-side encryption algorithm used when storing job results in Amazon S3 (for example, AES256, aws:kms)."
-              }
-            ]
-          },
-          "KMSKeyId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SSEKMSKeyId"
-              },
-              {
-                "description": "If the encryption type is <code>aws:kms</code>, this optional value specifies the ID of the symmetric customer managed key to use for encryption of job results. Amazon S3 only supports symmetric keys. For more information, see <a href=\"https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\">Using symmetric and asymmetric keys</a> in the <i>Amazon Web Services Key Management Service Developer Guide</i>."
-              }
-            ]
-          },
-          "KMSContext": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/KMSContext"
-              },
-              {
-                "description": "If the encryption type is <code>aws:kms</code>, this optional value can be used to specify the encryption context for the restore results."
-              }
-            ]
-          }
-        },
-        "description": "Contains the type of server-side encryption used."
-      },
-      "ReplicaKmsKeyID": {
-        "type": "string"
       },
       "EndEvent": {
         "type": "object",
@@ -9023,193 +7322,9 @@
           "wrapped": false
         }
       },
-      "ServerSideEncryptionConfiguration": {
-        "type": "object",
-        "required": [
-          "Rules"
-        ],
-        "properties": {
-          "Rules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ServerSideEncryptionRules"
-              },
-              {
-                "xml": {
-                  "name": "Rule"
-                },
-                "description": "Container for information about a particular server-side encryption configuration rule."
-              }
-            ]
-          }
-        },
-        "description": "Specifies the default server-side-encryption configuration."
-      },
-      "GetBucketEncryptionRequest": {
-        "type": "object",
-        "title": "GetBucketEncryptionRequest",
-        "properties": {}
-      },
-      "IntelligentTieringConfiguration": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Status",
-          "Tierings"
-        ],
-        "properties": {
-          "Id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringId"
-              },
-              {
-                "description": "The ID used to identify the S3 Intelligent-Tiering configuration."
-              }
-            ]
-          },
-          "Filter": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringFilter"
-              },
-              {
-                "description": "Specifies a bucket filter. The configuration only includes objects that meet the filter's criteria."
-              }
-            ]
-          },
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringStatus"
-              },
-              {
-                "description": "Specifies the status of the configuration."
-              }
-            ]
-          },
-          "Tierings": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TieringList"
-              },
-              {
-                "xml": {
-                  "name": "Tiering"
-                },
-                "description": "Specifies the S3 Intelligent-Tiering storage class tier of the configuration."
-              }
-            ]
-          }
-        },
-        "description": "<p>Specifies the S3 Intelligent-Tiering configuration for an Amazon S3 bucket.</p> <p>For information about the S3 Intelligent-Tiering storage class, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html#sc-dynamic-data-access\">Storage class for automatically optimizing frequently and infrequently accessed objects</a>.</p>"
-      },
-      "GetBucketIntelligentTieringConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketIntelligentTieringConfigurationRequest",
-        "properties": {}
-      },
-      "InventoryConfiguration": {
-        "type": "object",
-        "required": [
-          "Destination",
-          "IsEnabled",
-          "Id",
-          "IncludedObjectVersions",
-          "Schedule"
-        ],
-        "properties": {
-          "Destination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryDestination"
-              },
-              {
-                "description": "Contains information about where to publish the inventory results."
-              }
-            ]
-          },
-          "IsEnabled": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IsEnabled"
-              },
-              {
-                "description": "Specifies whether the inventory is enabled or disabled. If set to <code>True</code>, an inventory list is generated. If set to <code>False</code>, no inventory list is generated."
-              }
-            ]
-          },
-          "Filter": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryFilter"
-              },
-              {
-                "description": "Specifies an inventory filter. The inventory only includes objects that meet the filter's criteria."
-              }
-            ]
-          },
-          "Id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryId"
-              },
-              {
-                "description": "The ID used to identify the inventory configuration."
-              }
-            ]
-          },
-          "IncludedObjectVersions": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryIncludedObjectVersions"
-              },
-              {
-                "description": "Object versions to include in the inventory list. If set to <code>All</code>, the list includes all the object versions, which adds the version-related fields <code>VersionId</code>, <code>IsLatest</code>, and <code>DeleteMarker</code> to the list. If set to <code>Current</code>, the list does not contain these version-related fields."
-              }
-            ]
-          },
-          "OptionalFields": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryOptionalFields"
-              },
-              {
-                "description": "Contains the optional fields that are included in the inventory results."
-              }
-            ]
-          },
-          "Schedule": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventorySchedule"
-              },
-              {
-                "description": "Specifies the schedule for generating inventory results."
-              }
-            ]
-          }
-        },
-        "description": "Specifies the inventory configuration for an Amazon S3 bucket. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETInventoryConfig.html\">GET Bucket inventory</a> in the <i>Amazon S3 API Reference</i>. "
-      },
-      "GetBucketInventoryConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketInventoryConfigurationRequest",
-        "properties": {}
-      },
-      "GetBucketLifecycleConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketLifecycleConfigurationRequest",
-        "properties": {}
-      },
       "GetBucketLocationRequest": {
         "type": "object",
         "title": "GetBucketLocationRequest",
-        "properties": {}
-      },
-      "GetBucketNotificationConfigurationRequest": {
-        "type": "object",
-        "title": "GetBucketNotificationConfigurationRequest",
         "properties": {}
       },
       "OwnershipControls": {
@@ -9239,74 +7354,14 @@
         "title": "GetBucketOwnershipControlsRequest",
         "properties": {}
       },
-      "ReplicationConfiguration": {
-        "type": "object",
-        "required": [
-          "Role",
-          "Rules"
-        ],
-        "properties": {
-          "Role": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Role"
-              },
-              {
-                "description": "The Amazon Resource Name (ARN) of the Identity and Access Management (IAM) role that Amazon S3 assumes when replicating objects. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-how-setup.html\">How to Set Up Replication</a> in the <i>Amazon S3 User Guide</i>."
-              }
-            ]
-          },
-          "Rules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationRules"
-              },
-              {
-                "xml": {
-                  "name": "Rule"
-                },
-                "description": "A container for one or more replication rules. A replication configuration must have at least one rule and can contain a maximum of 1,000 rules. "
-              }
-            ]
-          }
-        },
-        "description": "A container for replication rules. You can add up to 1,000 rules. The maximum size of a replication configuration is 2 MB."
-      },
-      "GetBucketReplicationRequest": {
-        "type": "object",
-        "title": "GetBucketReplicationRequest",
-        "properties": {}
-      },
       "GetBucketRequestPaymentRequest": {
         "type": "object",
         "title": "GetBucketRequestPaymentRequest",
         "properties": {}
       },
-      "GetBucketTaggingRequest": {
-        "type": "object",
-        "title": "GetBucketTaggingRequest",
-        "properties": {}
-      },
-      "MFADeleteStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Disabled"
-        ]
-      },
       "GetBucketVersioningRequest": {
         "type": "object",
         "title": "GetBucketVersioningRequest",
-        "properties": {}
-      },
-      "GetBucketWebsiteRequest": {
-        "type": "object",
-        "title": "GetBucketWebsiteRequest",
-        "properties": {}
-      },
-      "GetObjectAclRequest": {
-        "type": "object",
-        "title": "GetObjectAclRequest",
         "properties": {}
       },
       "GetObjectAttributesParts": {
@@ -9465,9 +7520,6 @@
           "REPLICA"
         ]
       },
-      "TagCount": {
-        "type": "integer"
-      },
       "IfMatch": {
         "type": "string"
       },
@@ -9541,67 +7593,6 @@
       "GetObjectRetentionRequest": {
         "type": "object",
         "title": "GetObjectRetentionRequest",
-        "properties": {}
-      },
-      "GetObjectTaggingRequest": {
-        "type": "object",
-        "title": "GetObjectTaggingRequest",
-        "properties": {}
-      },
-      "GetObjectTorrentRequest": {
-        "type": "object",
-        "title": "GetObjectTorrentRequest",
-        "properties": {}
-      },
-      "PublicAccessBlockConfiguration": {
-        "type": "object",
-        "properties": {
-          "BlockPublicAcls": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Setting"
-              },
-              {
-                "description": "<p>Specifies whether Amazon S3 should block public access control lists (ACLs) for this bucket and objects in this bucket. Setting this element to <code>TRUE</code> causes the following behavior:</p> <ul> <li> <p>PUT Bucket ACL and PUT Object ACL calls fail if the specified ACL is public.</p> </li> <li> <p>PUT Object calls fail if the request includes a public ACL.</p> </li> <li> <p>PUT Bucket calls fail if the request includes a public ACL.</p> </li> </ul> <p>Enabling this setting doesn't affect existing policies or ACLs.</p>"
-              }
-            ]
-          },
-          "IgnorePublicAcls": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Setting"
-              },
-              {
-                "description": "<p>Specifies whether Amazon S3 should ignore public ACLs for this bucket and objects in this bucket. Setting this element to <code>TRUE</code> causes Amazon S3 to ignore all public ACLs on this bucket and objects in this bucket.</p> <p>Enabling this setting doesn't affect the persistence of any existing ACLs and doesn't prevent new public ACLs from being set.</p>"
-              }
-            ]
-          },
-          "BlockPublicPolicy": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Setting"
-              },
-              {
-                "description": "<p>Specifies whether Amazon S3 should block public bucket policies for this bucket. Setting this element to <code>TRUE</code> causes Amazon S3 to reject calls to PUT Bucket policy if the specified bucket policy allows public access. </p> <p>Enabling this setting doesn't affect existing bucket policies.</p>"
-              }
-            ]
-          },
-          "RestrictPublicBuckets": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Setting"
-              },
-              {
-                "description": "<p>Specifies whether Amazon S3 should restrict public bucket policies for this bucket. Setting this element to <code>TRUE</code> restricts access to this bucket to only Amazon Web Service principals and authorized users within this account if the bucket has a public policy.</p> <p>Enabling this setting doesn't affect previously stored bucket policies, except that public and cross-account access within any public bucket policy, including non-public delegation to specific accounts, is blocked.</p>"
-              }
-            ]
-          }
-        },
-        "description": "The PublicAccessBlock configuration that you want to apply to this Amazon S3 bucket. You can enable the configuration options in any combination. For more information about when Amazon S3 considers a bucket or object public, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html#access-control-block-public-access-policy-status\">The Meaning of \"Public\"</a> in the <i>Amazon S3 User Guide</i>. "
-      },
-      "GetPublicAccessBlockRequest": {
-        "type": "object",
-        "title": "GetPublicAccessBlockRequest",
         "properties": {}
       },
       "Grantee": {
@@ -9812,164 +7803,6 @@
         },
         "description": "Describes the serialization format of the object."
       },
-      "InventoryConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/InventoryConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "InventoryS3BucketDestination": {
-        "type": "object",
-        "required": [
-          "Bucket",
-          "Format"
-        ],
-        "properties": {
-          "AccountId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AccountId"
-              },
-              {
-                "description": "<p>The account ID that owns the destination S3 bucket. If no account ID is provided, the owner is not validated before exporting data. </p> <note> <p> Although this value is optional, we strongly recommend that you set it to help prevent problems if the destination bucket ownership changes. </p> </note>"
-              }
-            ]
-          },
-          "Bucket": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketName"
-              },
-              {
-                "description": "The Amazon Resource Name (ARN) of the bucket where inventory results will be published."
-              }
-            ]
-          },
-          "Format": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryFormat"
-              },
-              {
-                "description": "Specifies the output format of the inventory results."
-              }
-            ]
-          },
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "The prefix that is prepended to all inventory results."
-              }
-            ]
-          },
-          "Encryption": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InventoryEncryption"
-              },
-              {
-                "description": "Contains the type of server-side encryption used to encrypt the inventory results."
-              }
-            ]
-          }
-        },
-        "description": "Contains the bucket name, file format, bucket owner (optional), and prefix (optional) where inventory results are published."
-      },
-      "SSES3": {
-        "type": "object",
-        "properties": {},
-        "description": "Specifies the use of SSE-S3 to encrypt delivered inventory reports."
-      },
-      "SSEKMS": {
-        "type": "object",
-        "required": [
-          "KeyId"
-        ],
-        "properties": {
-          "KeyId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SSEKMSKeyId"
-              },
-              {
-                "description": "Specifies the ID of the Amazon Web Services Key Management Service (Amazon Web Services KMS) symmetric customer managed key to use for encrypting inventory reports."
-              }
-            ]
-          }
-        },
-        "description": "Specifies the use of SSE-KMS to encrypt delivered inventory reports."
-      },
-      "InventoryEncryption": {
-        "type": "object",
-        "properties": {
-          "SSES3": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SSES3"
-              },
-              {
-                "xml": {
-                  "name": "SSE-S3"
-                },
-                "description": "Specifies the use of SSE-S3 to encrypt delivered inventory reports."
-              }
-            ]
-          },
-          "SSEKMS": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SSEKMS"
-              },
-              {
-                "xml": {
-                  "name": "SSE-KMS"
-                },
-                "description": "Specifies the use of SSE-KMS to encrypt delivered inventory reports."
-              }
-            ]
-          }
-        },
-        "description": "Contains the type of server-side encryption used to encrypt the inventory results."
-      },
-      "InventoryFormat": {
-        "type": "string",
-        "enum": [
-          "CSV",
-          "ORC",
-          "Parquet"
-        ]
-      },
-      "InventoryFrequency": {
-        "type": "string",
-        "enum": [
-          "Daily",
-          "Weekly"
-        ]
-      },
-      "InventoryOptionalField": {
-        "type": "string",
-        "enum": [
-          "Size",
-          "LastModifiedDate",
-          "StorageClass",
-          "ETag",
-          "IsMultipartUploaded",
-          "ReplicationStatus",
-          "EncryptionStatus",
-          "ObjectLockRetainUntilDate",
-          "ObjectLockMode",
-          "ObjectLockLegalHoldStatus",
-          "IntelligentTieringAccessTier",
-          "BucketKeyStatus",
-          "ChecksumAlgorithm"
-        ]
-      },
       "IsPublic": {
         "type": "boolean"
       },
@@ -10006,115 +7839,6 @@
           }
         },
         "description": "Specifies object key name filtering rules. For information about key name filtering, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html\">Configuring Event Notifications</a> in the <i>Amazon S3 User Guide</i>."
-      },
-      "LambdaFunctionConfiguration": {
-        "type": "object",
-        "required": [
-          "LambdaFunctionArn",
-          "Events"
-        ],
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "LambdaFunctionArn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LambdaFunctionArn"
-              },
-              {
-                "xml": {
-                  "name": "CloudFunction"
-                },
-                "description": "The Amazon Resource Name (ARN) of the Lambda function that Amazon S3 invokes when the specified event type occurs."
-              }
-            ]
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "The Amazon S3 bucket event for which to invoke the Lambda function. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html\">Supported Event Types</a> in the <i>Amazon S3 User Guide</i>."
-              }
-            ]
-          },
-          "Filter": {
-            "$ref": "#/components/schemas/NotificationConfigurationFilter"
-          }
-        },
-        "description": "A container for specifying the configuration for Lambda notifications."
-      },
-      "LifecycleConfiguration": {
-        "type": "object",
-        "required": [
-          "Rules"
-        ],
-        "properties": {
-          "Rules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Rules"
-              },
-              {
-                "xml": {
-                  "name": "Rule"
-                },
-                "description": "Specifies lifecycle configuration rules for an Amazon S3 bucket. "
-              }
-            ]
-          }
-        },
-        "description": "Container for lifecycle rules. You can add as many as 1000 rules."
-      },
-      "LifecycleExpiration": {
-        "type": "object",
-        "properties": {
-          "Date": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Date"
-              },
-              {
-                "description": "Indicates at what date the object is to be moved or deleted. Should be in GMT ISO 8601 Format."
-              }
-            ]
-          },
-          "Days": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Days"
-              },
-              {
-                "description": "Indicates the lifetime, in days, of the objects that are subject to the rule. The value must be a non-zero positive integer."
-              }
-            ]
-          },
-          "ExpiredObjectDeleteMarker": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExpiredObjectDeleteMarker"
-              },
-              {
-                "description": "Indicates whether Amazon S3 will remove a delete marker with no noncurrent versions. If set to true, the delete marker will be expired; if set to false the policy takes no action. This cannot be specified with Days or Date in a Lifecycle Expiration Policy."
-              }
-            ]
-          }
-        },
-        "description": "Container for the expiration for the lifecycle of the object."
-      },
-      "TransitionList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Transition"
-        },
-        "xml": {
-          "wrapped": false
-        }
       },
       "NoncurrentVersionTransitionList": {
         "type": "array",
@@ -10162,25 +7886,6 @@
       },
       "NextToken": {
         "type": "string"
-      },
-      "ListBucketInventoryConfigurationsRequest": {
-        "type": "object",
-        "title": "ListBucketInventoryConfigurationsRequest",
-        "properties": {}
-      },
-      "MetricsConfigurationList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/MetricsConfiguration"
-        },
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "ListBucketMetricsConfigurationsRequest": {
-        "type": "object",
-        "title": "ListBucketMetricsConfigurationsRequest",
-        "properties": {}
       },
       "UploadIdMarker": {
         "type": "string"
@@ -10279,21 +7984,6 @@
       "TargetBucket": {
         "type": "string"
       },
-      "TargetGrants": {
-        "type": "array",
-        "items": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/TargetGrant"
-            },
-            {
-              "xml": {
-                "name": "Grant"
-              }
-            }
-          ]
-        }
-      },
       "TargetPrefix": {
         "type": "string"
       },
@@ -10359,19 +8049,6 @@
               },
               {
                 "description": "The prefix used when evaluating an AND predicate."
-              }
-            ]
-          },
-          "Tags": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "xml": {
-                  "name": "Tag"
-                },
-                "description": "The list of tags used when evaluating an AND predicate."
               }
             ]
           },
@@ -10540,21 +8217,6 @@
       },
       "Size": {
         "type": "integer"
-      },
-      "ObjectStorageClass": {
-        "type": "string",
-        "enum": [
-          "STANDARD",
-          "REDUCED_REDUNDANCY",
-          "GLACIER",
-          "STANDARD_IA",
-          "ONEZONE_IA",
-          "INTELLIGENT_TIERING",
-          "DEEP_ARCHIVE",
-          "OUTPOSTS",
-          "GLACIER_IR",
-          "SNOW"
-        ]
       },
       "Object": {
         "type": "object",
@@ -10832,89 +8494,6 @@
         },
         "description": "The version of an object."
       },
-      "S3Location": {
-        "type": "object",
-        "required": [
-          "BucketName",
-          "Prefix"
-        ],
-        "properties": {
-          "BucketName": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketName"
-              },
-              {
-                "description": "The name of the bucket where the restore results will be placed."
-              }
-            ]
-          },
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LocationPrefix"
-              },
-              {
-                "description": "The prefix that is prepended to the restore results for this request."
-              }
-            ]
-          },
-          "Encryption": {
-            "$ref": "#/components/schemas/Encryption"
-          },
-          "CannedACL": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ObjectCannedACL"
-              },
-              {
-                "description": "The canned ACL to apply to the restore results."
-              }
-            ]
-          },
-          "AccessControlList": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Grants"
-              },
-              {
-                "description": "A list of grants that control access to the staged results."
-              }
-            ]
-          },
-          "Tagging": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tagging"
-              },
-              {
-                "description": "The tag-set that is applied to the restore results."
-              }
-            ]
-          },
-          "UserMetadata": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/UserMetadata"
-              },
-              {
-                "description": "A list of metadata to store with the restore results in S3."
-              }
-            ]
-          },
-          "StorageClass": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StorageClass"
-              },
-              {
-                "description": "The class of storage used to store the restore results."
-              }
-            ]
-          }
-        },
-        "description": "Describes an Amazon S3 location that will receive the results of the restore request."
-      },
       "OutputSerialization": {
         "type": "object",
         "properties": {
@@ -11126,21 +8705,6 @@
           "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
         }
       },
-      "PutBucketReplicationRequest": {
-        "type": "object",
-        "required": [
-          "ReplicationConfiguration"
-        ],
-        "title": "PutBucketReplicationRequest",
-        "properties": {
-          "ReplicationConfiguration": {
-            "$ref": "#/components/schemas/ReplicationConfiguration"
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
       "RequestPaymentConfiguration": {
         "type": "object",
         "required": [
@@ -11274,74 +8838,6 @@
           "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
         }
       },
-      "WebsiteConfiguration": {
-        "type": "object",
-        "properties": {
-          "ErrorDocument": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorDocument"
-              },
-              {
-                "description": "The name of the error document for the website."
-              }
-            ]
-          },
-          "IndexDocument": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndexDocument"
-              },
-              {
-                "description": "The name of the index document for the website."
-              }
-            ]
-          },
-          "RedirectAllRequestsTo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RedirectAllRequestsTo"
-              },
-              {
-                "description": "<p>The redirect behavior for every request to this bucket's website endpoint.</p> <important> <p>If you specify this property, you can't specify any other property.</p> </important>"
-              }
-            ]
-          },
-          "RoutingRules": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RoutingRules"
-              },
-              {
-                "description": "Rules that define when a redirect is applied and the redirect behavior."
-              }
-            ]
-          }
-        },
-        "description": "Specifies website configuration parameters for an Amazon S3 bucket."
-      },
-      "PutBucketWebsiteRequest": {
-        "type": "object",
-        "required": [
-          "WebsiteConfiguration"
-        ],
-        "title": "PutBucketWebsiteRequest",
-        "properties": {
-          "WebsiteConfiguration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/WebsiteConfiguration"
-              },
-              {
-                "description": "Container for the request."
-              }
-            ]
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
-      },
       "PutObjectRequest": {
         "type": "object",
         "title": "PutObjectRequest",
@@ -11411,67 +8907,6 @@
         "xml": {
           "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
         }
-      },
-      "QueueArn": {
-        "type": "string"
-      },
-      "QueueConfiguration": {
-        "type": "object",
-        "required": [
-          "QueueArn",
-          "Events"
-        ],
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "QueueArn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/QueueArn"
-              },
-              {
-                "xml": {
-                  "name": "Queue"
-                },
-                "description": "The Amazon Resource Name (ARN) of the Amazon SQS queue to which Amazon S3 publishes a message when it detects events of the specified type."
-              }
-            ]
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "A collection of bucket events for which to send notifications"
-              }
-            ]
-          },
-          "Filter": {
-            "$ref": "#/components/schemas/NotificationConfigurationFilter"
-          }
-        },
-        "description": "Specifies the configuration for publishing messages to an Amazon Simple Queue Service (Amazon SQS) queue when Amazon S3 detects specified events."
-      },
-      "RecordsEvent": {
-        "type": "object",
-        "properties": {
-          "Payload": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Body"
-              },
-              {
-                "description": "The byte array of partial, one or more result records."
-              }
-            ]
-          }
-        },
-        "description": "The container for the records event."
       },
       "ReplaceKeyPrefixWith": {
         "type": "string"
@@ -11561,201 +8996,6 @@
         },
         "description": "<p>A filter that you can specify for selection for modifications on replicas. Amazon S3 doesn't replicate replica modifications by default. In the latest version of replication configuration (when <code>Filter</code> is specified), you can specify this element and set the status to <code>Enabled</code> to replicate modifications on replicas. </p> <note> <p> If you don't specify the <code>Filter</code> element, Amazon S3 assumes that the replication configuration is the earlier version, V1. In the earlier version, this element is not allowed.</p> </note>"
       },
-      "ReplicationRuleFilter": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "<p>An object key name prefix that identifies the subset of objects to which the rule applies.</p> <important> <p>Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-xml-related-constraints\"> XML related object key constraints</a>.</p> </important>"
-              }
-            ]
-          },
-          "Tag": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tag"
-              },
-              {
-                "description": "<p>A container for specifying a tag key and value. </p> <p>The rule applies only to objects that have the tag in their tag set.</p>"
-              }
-            ]
-          },
-          "And": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationRuleAndOperator"
-              },
-              {
-                "description": "<p>A container for specifying rule filters. The filters determine the subset of objects to which the rule applies. This element is required only if you specify more than one filter. For example: </p> <ul> <li> <p>If you specify both a <code>Prefix</code> and a <code>Tag</code> filter, wrap these filters in an <code>And</code> tag.</p> </li> <li> <p>If you specify a filter based on multiple tags, wrap the <code>Tag</code> elements in an <code>And</code> tag.</p> </li> </ul>"
-              }
-            ]
-          }
-        },
-        "description": "A filter that identifies the subset of objects to which the replication rule applies. A <code>Filter</code> must specify exactly one <code>Prefix</code>, <code>Tag</code>, or an <code>And</code> child element."
-      },
-      "ReplicationRuleStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Disabled"
-        ]
-      },
-      "SourceSelectionCriteria": {
-        "type": "object",
-        "properties": {
-          "SseKmsEncryptedObjects": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SseKmsEncryptedObjects"
-              },
-              {
-                "description": " A container for filter information for the selection of Amazon S3 objects encrypted with Amazon Web Services KMS. If you include <code>SourceSelectionCriteria</code> in the replication configuration, this element is required. "
-              }
-            ]
-          },
-          "ReplicaModifications": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicaModifications"
-              },
-              {
-                "description": "<p>A filter that you can specify for selections for modifications on replicas. Amazon S3 doesn't replicate replica modifications by default. In the latest version of replication configuration (when <code>Filter</code> is specified), you can specify this element and set the status to <code>Enabled</code> to replicate modifications on replicas. </p> <note> <p> If you don't specify the <code>Filter</code> element, Amazon S3 assumes that the replication configuration is the earlier version, V1. In the earlier version, this element is not allowed</p> </note>"
-              }
-            ]
-          }
-        },
-        "description": "A container that describes additional filters for identifying the source objects that you want to replicate. You can choose to enable or disable the replication of these objects. Currently, Amazon S3 supports only the filter that you can specify for objects created with server-side encryption using a customer managed key stored in Amazon Web Services Key Management Service (SSE-KMS)."
-      },
-      "ReplicationRule": {
-        "type": "object",
-        "required": [
-          "Status",
-          "Destination"
-        ],
-        "properties": {
-          "ID": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ID"
-              },
-              {
-                "description": "A unique identifier for the rule. The maximum value is 255 characters."
-              }
-            ]
-          },
-          "Priority": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Priority"
-              },
-              {
-                "description": "<p>The priority indicates which rule has precedence whenever two or more replication rules conflict. Amazon S3 will attempt to replicate objects according to all replication rules. However, if there are two or more rules with the same destination bucket, then objects will be replicated according to the rule with the highest priority. The higher the number, the higher the priority. </p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/replication.html\">Replication</a> in the <i>Amazon S3 User Guide</i>.</p>"
-              }
-            ]
-          },
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "deprecated": true,
-                "description": "<p>An object key name prefix that identifies the object or objects to which the rule applies. The maximum prefix length is 1,024 characters. To include all objects in a bucket, specify an empty string. </p> <important> <p>Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-xml-related-constraints\"> XML related object key constraints</a>.</p> </important>"
-              }
-            ]
-          },
-          "Filter": {
-            "$ref": "#/components/schemas/ReplicationRuleFilter"
-          },
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReplicationRuleStatus"
-              },
-              {
-                "description": "Specifies whether the rule is enabled."
-              }
-            ]
-          },
-          "SourceSelectionCriteria": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SourceSelectionCriteria"
-              },
-              {
-                "description": "A container that describes additional filters for identifying the source objects that you want to replicate. You can choose to enable or disable the replication of these objects. Currently, Amazon S3 supports only the filter that you can specify for objects created with server-side encryption using a customer managed key stored in Amazon Web Services Key Management Service (SSE-KMS)."
-              }
-            ]
-          },
-          "ExistingObjectReplication": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExistingObjectReplication"
-              },
-              {
-                "description": "<p/>"
-              }
-            ]
-          },
-          "Destination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Destination"
-              },
-              {
-                "description": "A container for information about the replication destination and its configurations including enabling the S3 Replication Time Control (S3 RTC)."
-              }
-            ]
-          },
-          "DeleteMarkerReplication": {
-            "$ref": "#/components/schemas/DeleteMarkerReplication"
-          }
-        },
-        "description": "Specifies which Amazon S3 objects to replicate and where to store the replicas."
-      },
-      "ReplicationRuleAndOperator": {
-        "type": "object",
-        "properties": {
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "An object key name prefix that identifies the subset of objects to which the rule applies."
-              }
-            ]
-          },
-          "Tags": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TagSet"
-              },
-              {
-                "xml": {
-                  "name": "Tag"
-                },
-                "description": "An array of tags containing key and value pairs."
-              }
-            ]
-          }
-        },
-        "description": "<p>A container for specifying rule filters. The filters determine the subset of objects to which the rule applies. This element is required only if you specify more than one filter. </p> <p>For example:</p> <ul> <li> <p>If you specify both a <code>Prefix</code> and a <code>Tag</code> filter, wrap these filters in an <code>And</code> tag. </p> </li> <li> <p>If you specify a filter based on multiple tags, wrap the <code>Tag</code> elements in an <code>And</code> tag.</p> </li> </ul>",
-        "xml": {
-          "wrapped": false
-        }
-      },
-      "ReplicationTimeStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Disabled"
-        ]
-      },
       "RequestProgress": {
         "type": "object",
         "properties": {
@@ -11780,94 +9020,6 @@
       },
       "RestoreOutputPath": {
         "type": "string"
-      },
-      "RestoreRequest": {
-        "type": "object",
-        "properties": {
-          "Days": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Days"
-              },
-              {
-                "description": "<p>Lifetime of the active copy in days. Do not use with restores that specify <code>OutputLocation</code>.</p> <p>The Days element is required for regular restores, and must not be provided for select requests.</p>"
-              }
-            ]
-          },
-          "GlacierJobParameters": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GlacierJobParameters"
-              },
-              {
-                "description": "S3 Glacier related parameters pertaining to this job. Do not use with restores that specify <code>OutputLocation</code>."
-              }
-            ]
-          },
-          "Type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RestoreRequestType"
-              },
-              {
-                "description": "Type of restore request."
-              }
-            ]
-          },
-          "Tier": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Tier"
-              },
-              {
-                "description": "Retrieval tier at which the restore will be processed."
-              }
-            ]
-          },
-          "Description": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Description"
-              },
-              {
-                "description": "The optional description for the job."
-              }
-            ]
-          },
-          "SelectParameters": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SelectParameters"
-              },
-              {
-                "description": "Describes the parameters for Select job types."
-              }
-            ]
-          },
-          "OutputLocation": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OutputLocation"
-              },
-              {
-                "description": "Describes the location where the restore job's output is stored."
-              }
-            ]
-          }
-        },
-        "description": "Container for restore job parameters."
-      },
-      "RestoreObjectRequest": {
-        "type": "object",
-        "title": "RestoreObjectRequest",
-        "properties": {
-          "RestoreRequest": {
-            "$ref": "#/components/schemas/RestoreRequest"
-          }
-        },
-        "xml": {
-          "namespace": "http://s3.amazonaws.com/doc/2006-03-01/"
-        }
       },
       "RoutingRule": {
         "type": "object",
@@ -11897,111 +9049,6 @@
           }
         },
         "description": "Specifies the redirect behavior and when a redirect is applied. For more information about routing rules, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/how-to-page-redirect.html#advanced-conditional-redirects\">Configuring advanced conditional redirects</a> in the <i>Amazon S3 User Guide</i>."
-      },
-      "Transition": {
-        "type": "object",
-        "properties": {
-          "Date": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Date"
-              },
-              {
-                "description": "Indicates when objects are transitioned to the specified storage class. The date value must be in ISO 8601 format. The time is always midnight UTC."
-              }
-            ]
-          },
-          "Days": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Days"
-              },
-              {
-                "description": "Indicates the number of days after creation when objects are transitioned to the specified storage class. The value must be a positive integer."
-              }
-            ]
-          },
-          "StorageClass": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TransitionStorageClass"
-              },
-              {
-                "description": "The storage class to which you want the object to transition."
-              }
-            ]
-          }
-        },
-        "description": "Specifies when an object transitions to a specified storage class. For more information about Amazon S3 lifecycle configuration rules, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html\">Transitioning Objects Using Amazon S3 Lifecycle</a> in the <i>Amazon S3 User Guide</i>."
-      },
-      "Rule": {
-        "type": "object",
-        "required": [
-          "Prefix",
-          "Status"
-        ],
-        "properties": {
-          "Expiration": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LifecycleExpiration"
-              },
-              {
-                "description": "Specifies the expiration for the lifecycle of the object."
-              }
-            ]
-          },
-          "ID": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ID"
-              },
-              {
-                "description": "Unique identifier for the rule. The value can't be longer than 255 characters."
-              }
-            ]
-          },
-          "Prefix": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Prefix"
-              },
-              {
-                "description": "<p>Object key prefix that identifies one or more objects to which this rule applies.</p> <important> <p>Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html#object-key-xml-related-constraints\"> XML related object key constraints</a>.</p> </important>"
-              }
-            ]
-          },
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExpirationStatus"
-              },
-              {
-                "description": "If <code>Enabled</code>, the rule is currently being applied. If <code>Disabled</code>, the rule is not currently being applied."
-              }
-            ]
-          },
-          "Transition": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Transition"
-              },
-              {
-                "description": "Specifies when an object transitions to a specified storage class. For more information about Amazon S3 lifecycle configuration rules, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html\">Transitioning Objects Using Amazon S3 Lifecycle</a> in the <i>Amazon S3 User Guide</i>."
-              }
-            ]
-          },
-          "NoncurrentVersionTransition": {
-            "$ref": "#/components/schemas/NoncurrentVersionTransition"
-          },
-          "NoncurrentVersionExpiration": {
-            "$ref": "#/components/schemas/NoncurrentVersionExpiration"
-          },
-          "AbortIncompleteMultipartUpload": {
-            "$ref": "#/components/schemas/AbortIncompleteMultipartUpload"
-          }
-        },
-        "description": "Specifies lifecycle rules for an Amazon S3 bucket. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTlifecycle.html\">Put Bucket Lifecycle Configuration</a> in the <i>Amazon S3 API Reference</i>. For examples, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html#API_PutBucketLifecycleConfiguration_Examples\">Put Bucket Lifecycle Configuration Examples</a>."
       },
       "UserMetadata": {
         "type": "array",
@@ -12060,216 +9107,6 @@
         },
         "description": "Container for the Stats Event."
       },
-      "SelectObjectContentEventStream": {
-        "type": "object",
-        "properties": {
-          "Records": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RecordsEvent"
-              },
-              {
-                "description": "The Records Event."
-              }
-            ]
-          },
-          "Stats": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatsEvent"
-              },
-              {
-                "description": "The Stats Event."
-              }
-            ]
-          },
-          "Progress": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ProgressEvent"
-              },
-              {
-                "description": "The Progress Event."
-              }
-            ]
-          },
-          "Cont": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ContinuationEvent"
-              },
-              {
-                "description": "The Continuation Event."
-              }
-            ]
-          },
-          "End": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EndEvent"
-              },
-              {
-                "description": "The End Event."
-              }
-            ]
-          }
-        },
-        "description": "The container for selecting objects from a content event stream."
-      },
-      "SelectObjectContentRequest": {
-        "type": "object",
-        "required": [
-          "Expression",
-          "ExpressionType",
-          "InputSerialization",
-          "OutputSerialization"
-        ],
-        "title": "SelectObjectContentRequest",
-        "properties": {
-          "Expression": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Expression"
-              },
-              {
-                "description": "The expression that is used to query the object."
-              }
-            ]
-          },
-          "ExpressionType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExpressionType"
-              },
-              {
-                "description": "The type of the provided expression (for example, SQL)."
-              }
-            ]
-          },
-          "RequestProgress": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RequestProgress"
-              },
-              {
-                "description": "Specifies if periodic request progress information should be enabled."
-              }
-            ]
-          },
-          "InputSerialization": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InputSerialization"
-              },
-              {
-                "description": "Describes the format of the data in the object that is being queried."
-              }
-            ]
-          },
-          "OutputSerialization": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/OutputSerialization"
-              },
-              {
-                "description": "Describes the format of the data that you want Amazon S3 to return in response."
-              }
-            ]
-          },
-          "ScanRange": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ScanRange"
-              },
-              {
-                "description": "<p>Specifies the byte range of the object to get the records from. A record is processed when its first byte is contained by the range. This parameter is optional, but when specified, it must not be empty. See RFC 2616, Section 14.35.1 about how to specify the start and end of the range.</p> <p> <code>ScanRange</code>may be used in the following ways:</p> <ul> <li> <p> <code>&lt;scanrange&gt;&lt;start&gt;50&lt;/start&gt;&lt;end&gt;100&lt;/end&gt;&lt;/scanrange&gt;</code> - process only the records starting between the bytes 50 and 100 (inclusive, counting from zero)</p> </li> <li> <p> <code>&lt;scanrange&gt;&lt;start&gt;50&lt;/start&gt;&lt;/scanrange&gt;</code> - process only the records starting after the byte 50</p> </li> <li> <p> <code>&lt;scanrange&gt;&lt;end&gt;50&lt;/end&gt;&lt;/scanrange&gt;</code> - process only the records within the last 50 bytes of the file.</p> </li> </ul>"
-              }
-            ]
-          }
-        },
-        "description": "Request to filter the contents of an Amazon S3 object based on a simple Structured Query Language (SQL) statement. In the request, along with the SQL expression, you must specify a data serialization format (JSON or CSV) of the object. Amazon S3 uses this to parse object data into records. It returns only records that match the specified SQL expression. You must also specify the data serialization format for the response. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html\">S3Select API Documentation</a>."
-      },
-      "ServerSideEncryptionByDefault": {
-        "type": "object",
-        "required": [
-          "SSEAlgorithm"
-        ],
-        "properties": {
-          "SSEAlgorithm": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ServerSideEncryption"
-              },
-              {
-                "description": "Server-side encryption algorithm to use for the default encryption."
-              }
-            ]
-          },
-          "KMSMasterKeyID": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SSEKMSKeyId"
-              },
-              {
-                "description": "<p>Amazon Web Services Key Management Service (KMS) customer Amazon Web Services KMS key ID to use for the default encryption. This parameter is allowed if and only if <code>SSEAlgorithm</code> is set to <code>aws:kms</code>.</p> <p>You can specify the key ID or the Amazon Resource Name (ARN) of the KMS key. However, if you are using encryption with cross-account or Amazon Web Services service operations you must use a fully qualified KMS key ARN. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html#bucket-encryption-update-bucket-policy\">Using encryption for cross-account operations</a>. </p> <p> <b>For example:</b> </p> <ul> <li> <p>Key ID: <code>1234abcd-12ab-34cd-56ef-1234567890ab</code> </p> </li> <li> <p>Key ARN: <code>arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab</code> </p> </li> </ul> <important> <p>Amazon S3 only supports symmetric KMS keys and not asymmetric KMS keys. For more information, see <a href=\"https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html\">Using symmetric and asymmetric keys</a> in the <i>Amazon Web Services Key Management Service Developer Guide</i>.</p> </important>"
-              }
-            ]
-          }
-        },
-        "description": "Describes the default server-side encryption to apply to new objects in the bucket. If a PUT Object request doesn't specify any server-side encryption, this default encryption will be applied. If you don't specify a customer managed key at configuration, Amazon S3 automatically creates an Amazon Web Services KMS key in your Amazon Web Services account the first time that you add an object encrypted with SSE-KMS to a bucket. By default, Amazon S3 uses this KMS key for SSE-KMS. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTencryption.html\">PUT Bucket encryption</a> in the <i>Amazon S3 API Reference</i>."
-      },
-      "ServerSideEncryptionRule": {
-        "type": "object",
-        "properties": {
-          "ApplyServerSideEncryptionByDefault": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ServerSideEncryptionByDefault"
-              },
-              {
-                "description": "Specifies the default server-side encryption to apply to new objects in the bucket. If a PUT Object request doesn't specify any server-side encryption, this default encryption will be applied."
-              }
-            ]
-          },
-          "BucketKeyEnabled": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketKeyEnabled"
-              },
-              {
-                "description": "<p>Specifies whether Amazon S3 should use an S3 Bucket Key with server-side encryption using KMS (SSE-KMS) for new objects in the bucket. Existing objects are not affected. Setting the <code>BucketKeyEnabled</code> element to <code>true</code> causes Amazon S3 to use an S3 Bucket Key. By default, S3 Bucket Key is not enabled.</p> <p>For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-key.html\">Amazon S3 Bucket Keys</a> in the <i>Amazon S3 User Guide</i>.</p>"
-              }
-            ]
-          }
-        },
-        "description": "Specifies the default server-side encryption configuration."
-      },
-      "SseKmsEncryptedObjects": {
-        "type": "object",
-        "required": [
-          "Status"
-        ],
-        "properties": {
-          "Status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SseKmsEncryptedObjectsStatus"
-              },
-              {
-                "description": "Specifies whether Amazon S3 replicates objects created with server-side encryption using an Amazon Web Services KMS key stored in Amazon Web Services Key Management Service."
-              }
-            ]
-          }
-        },
-        "description": "A container for filter information for the selection of S3 objects encrypted with Amazon Web Services KMS."
-      },
-      "SseKmsEncryptedObjectsStatus": {
-        "type": "string",
-        "enum": [
-          "Enabled",
-          "Disabled"
-        ]
-      },
       "Stats": {
         "type": "object",
         "properties": {
@@ -12306,145 +9143,8 @@
         },
         "description": "Container for the stats details."
       },
-      "StorageClassAnalysisDataExport": {
-        "type": "object",
-        "required": [
-          "OutputSchemaVersion",
-          "Destination"
-        ],
-        "properties": {
-          "OutputSchemaVersion": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StorageClassAnalysisSchemaVersion"
-              },
-              {
-                "description": "The version of the output schema to use when exporting data. Must be <code>V_1</code>."
-              }
-            ]
-          },
-          "Destination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnalyticsExportDestination"
-              },
-              {
-                "description": "The place to store the data for an analysis."
-              }
-            ]
-          }
-        },
-        "description": "Container for data related to the storage class analysis for an Amazon S3 bucket for export."
-      },
-      "StorageClassAnalysisSchemaVersion": {
-        "type": "string",
-        "enum": [
-          "V_1"
-        ]
-      },
       "Value": {
         "type": "string"
-      },
-      "TargetGrant": {
-        "type": "object",
-        "properties": {
-          "Grantee": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Grantee"
-              },
-              {
-                "description": "Container for the person being granted permissions."
-              }
-            ]
-          },
-          "Permission": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketLogsPermission"
-              },
-              {
-                "description": "Logging permissions assigned to the grantee for the bucket."
-              }
-            ]
-          }
-        },
-        "description": "<p>Container for granting information.</p> <p>Buckets that use the bucket owner enforced setting for Object Ownership don't support target grants. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html#grant-log-delivery-permissions-general\">Permissions server access log delivery</a> in the <i>Amazon S3 User Guide</i>.</p>"
-      },
-      "Tiering": {
-        "type": "object",
-        "required": [
-          "Days",
-          "AccessTier"
-        ],
-        "properties": {
-          "Days": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringDays"
-              },
-              {
-                "description": "The number of consecutive days of no access after which an object will be eligible to be transitioned to the corresponding tier. The minimum number of days specified for Archive Access tier must be at least 90 days and Deep Archive Access tier must be at least 180 days. The maximum can be up to 2 years (730 days)."
-              }
-            ]
-          },
-          "AccessTier": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntelligentTieringAccessTier"
-              },
-              {
-                "description": "S3 Intelligent-Tiering access tier. See <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/storage-class-intro.html#sc-dynamic-data-access\">Storage class for automatically optimizing frequently and infrequently accessed objects</a> for a list of access tiers in the S3 Intelligent-Tiering storage class."
-              }
-            ]
-          }
-        },
-        "description": "The S3 Intelligent-Tiering storage class is designed to optimize storage costs by automatically moving data to the most cost-effective storage access tier, without additional operational overhead."
-      },
-      "TopicArn": {
-        "type": "string"
-      },
-      "TopicConfiguration": {
-        "type": "object",
-        "required": [
-          "TopicArn",
-          "Events"
-        ],
-        "properties": {
-          "Id": {
-            "$ref": "#/components/schemas/NotificationId"
-          },
-          "TopicArn": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TopicArn"
-              },
-              {
-                "xml": {
-                  "name": "Topic"
-                },
-                "description": "The Amazon Resource Name (ARN) of the Amazon SNS topic to which Amazon S3 publishes a message when it detects events of the specified type."
-              }
-            ]
-          },
-          "Events": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EventList"
-              },
-              {
-                "xml": {
-                  "name": "Event"
-                },
-                "description": "The Amazon S3 bucket event about which to send notifications. For more information, see <a href=\"https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html\">Supported Event Types</a> in the <i>Amazon S3 User Guide</i>."
-              }
-            ]
-          },
-          "Filter": {
-            "$ref": "#/components/schemas/NotificationConfigurationFilter"
-          }
-        },
-        "description": "A container for specifying the configuration for publication of messages to an Amazon Simple Notification Service (Amazon SNS) topic when Amazon S3 detects specified events."
       },
       "UploadPartCopyRequest": {
         "type": "object",
@@ -12495,6 +9195,54 @@
             ]
           }
         }
+      },
+      "StorageClass": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "REDUCED_REDUNDANCY",
+          "STANDARD_IA",
+          "ONEZONE_IA",
+          "INTELLIGENT_TIERING",
+          "GLACIER",
+          "DEEP_ARCHIVE",
+          "OUTPOSTS",
+          "GLACIER_IR",
+          "SNOW"
+        ]
+      },
+      "GetBucketLocationOutput": {
+        "type": "object",
+        "example": {
+          "LocationConstraint": "us-west-2"
+        },
+        "properties": {
+          "LocationConstraint": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BucketLocationConstraint"
+              },
+              {
+                "description": "Specifies the Region where the bucket resides. For a list of all the Amazon S3 supported location constraints by Region, see <a href=\"https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region\">Regions and Endpoints</a>. Buckets in Region <code>us-east-1</code> have a LocationConstraint of <code>null</code>."
+              }
+            ]
+          }
+        }
+      },
+      "ObjectStorageClass": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "REDUCED_REDUNDANCY",
+          "GLACIER",
+          "STANDARD_IA",
+          "ONEZONE_IA",
+          "INTELLIGENT_TIERING",
+          "DEEP_ARCHIVE",
+          "OUTPOSTS",
+          "GLACIER_IR",
+          "SNOW"
+        ]
       }
     }
   },
