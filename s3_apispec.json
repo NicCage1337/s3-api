@@ -81,6 +81,56 @@
   ],
   "x-hasEquivalentPaths": true,
   "paths": {
+    "/{Bucket}/?slocation": {
+      "get": {
+        "operationId": "GetBucketLocation",
+        "description": "",
+        "externalDocs": {
+          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html"
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBucketLocationOutput"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Bucket",
+            "in": "path",
+            "required": true,
+            "description": "The name of the bucket for which to get the location.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": "true",
+              "enum": [
+                true
+              ]
+            },
+            "allowEmptyValue": true
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/x-amz-security-token"
+        }
+      ]
+    },
     "/{Bucket}/{Key}#uploadId": {
       "delete": {
         "operationId": "AbortMultipartUpload",
@@ -1688,55 +1738,6 @@
             }
           }
         }
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
-    "/{Bucket}#location": {
-      "get": {
-        "operationId": "GetBucketLocation",
-        "description": "",
-        "externalDocs": {
-          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html"
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetBucketLocationOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "The name of the bucket for which to get the location.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ]
       },
       "parameters": [
         {
