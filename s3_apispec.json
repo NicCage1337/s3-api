@@ -81,56 +81,6 @@
   ],
   "x-hasEquivalentPaths": true,
   "paths": {
-    "/{Bucket}/?location": {
-      "get": {
-        "operationId": "GetBucketLocation",
-        "description": "",
-        "externalDocs": {
-          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html"
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetBucketLocationOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "The name of the bucket for which to get the location.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "default": "true",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
     "/{Bucket}/{Key}#uploadId": {
       "delete": {
         "operationId": "AbortMultipartUpload",
@@ -695,25 +645,11 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListObjectsOutput"
-                }
-              }
-            }
+            "description": "Success" 
           },
           "480": {
-            "description": "NoSuchBucket",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoSuchBucket"
-                }
-              }
+            "description": "NoSuchBucket"
             }
-          }
         },
         "parameters": [
           {
@@ -735,6 +671,18 @@
             }
           },
           {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": "true",
+              "enum": [
+                true
+              ]
+            }
+          },
+          {
             "name": "encoding-type",
             "in": "query",
             "required": false,
@@ -745,6 +693,17 @@
                 "url"
               ],
               "description": ""
+            }
+          },
+          {
+            "name": "versions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
             }
           },
           {
@@ -791,8 +750,134 @@
             },
             "description": "Pagination token",
             "required": false
+          },
+          {
+            "name": "uploads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          },
+          {
+            "name": "object-lock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
           }
+          
         ]
+      },
+      "post": {
+        "operationId": "DeleteObjects",
+        "description": "",
+        "externalDocs": {
+          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html"
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Bucket",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-amz-bypass-governance-retention",
+            "in": "header",
+            "required": false,
+            "description": "Specifies whether you want to delete this object even if it has a Governance-type Object Lock in place. To use this header, you must have the <code>s3:BypassGovernanceRetention</code> permission.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "x-amz-sdk-checksum-algorithm",
+            "in": "header",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CRC32",
+                "CRC32C",
+                "SHA1",
+                "SHA256"
+              ]
+            }
+          },
+          {
+            "name": "delete",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            },
+            "allowEmptyValue": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/xml": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "Delete"
+                ],
+                "properties": {
+                  "Delete": {
+                    "description": "Container for the objects to delete.",
+                    "type": "object",
+                    "properties": {
+                      "Objects": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/ObjectIdentifierList"
+                          },
+                          {
+                            "xml": {
+                              "name": "Object"
+                            },
+                            "description": "The objects to delete."
+                          }
+                        ]
+                      },
+                      "Quiet": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Quiet"
+                          },
+                          {
+                            "description": "Element to enable quiet mode for the request. When you add this element, you must set its value to true."
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/{Bucket}/{Key}#uploads": {
@@ -1628,123 +1713,6 @@
         }
       }
     },
-    "/{Bucket}#delete": {
-      "post": {
-        "operationId": "DeleteObjects",
-        "description": "",
-        "externalDocs": {
-          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html"
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeleteObjectsOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-amz-bypass-governance-retention",
-            "in": "header",
-            "required": false,
-            "description": "Specifies whether you want to delete this object even if it has a Governance-type Object Lock in place. To use this header, you must have the <code>s3:BypassGovernanceRetention</code> permission.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "x-amz-sdk-checksum-algorithm",
-            "in": "header",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "CRC32",
-                "CRC32C",
-                "SHA1",
-                "SHA256"
-              ]
-            }
-          },
-          {
-            "name": "delete",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "text/xml": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "Delete"
-                ],
-                "properties": {
-                  "Delete": {
-                    "description": "Container for the objects to delete.",
-                    "type": "object",
-                    "properties": {
-                      "Objects": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/ObjectIdentifierList"
-                          },
-                          {
-                            "xml": {
-                              "name": "Object"
-                            },
-                            "description": "The objects to delete."
-                          }
-                        ]
-                      },
-                      "Quiet": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/Quiet"
-                          },
-                          {
-                            "description": "Element to enable quiet mode for the request. When you add this element, you must set its value to true."
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
     "/{Bucket}/{Key}#attributes&x-amz-object-attributes": {
       "get": {
         "operationId": "GetObjectAttributes",
@@ -1850,162 +1818,6 @@
         }
       ]
     },
-    "/{Bucket}#object-lock": {
-      "get": {
-        "operationId": "GetObjectLockConfiguration",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetObjectLockConfigurationOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "object-lock",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ],
-      "put": {
-        "operationId": "PutObjectLockConfiguration",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/PutObjectLockConfigurationOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "The bucket whose Object Lock configuration you want to create or replace.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-amz-bucket-object-lock-token",
-            "in": "header",
-            "required": false,
-            "description": "A token to allow Object Lock to be enabled for an existing bucket.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-MD5",
-            "in": "header",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-amz-sdk-checksum-algorithm",
-            "in": "header",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "CRC32",
-                "CRC32C",
-                "SHA1",
-                "SHA256"
-              ]
-            }
-          },
-          {
-            "name": "object-lock",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "text/xml": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "ObjectLockConfiguration": {
-                    "description": "The container element for Object Lock configuration parameters.",
-                    "type": "object",
-                    "properties": {
-                      "ObjectLockEnabled": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/ObjectLockEnabled"
-                          },
-                          {
-                            "description": "Indicates whether this bucket has an Object Lock configuration enabled. Enable <code>ObjectLockEnabled</code> when you apply <code>ObjectLockConfiguration</code> to a bucket. "
-                          }
-                        ]
-                      },
-                      "Rule": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/ObjectLockRule"
-                          },
-                          {
-                            "description": "Specifies the Object Lock rule for the specified object. Enable the this rule when you apply <code>ObjectLockConfiguration</code> to a bucket. Bucket settings require both a mode and a period. The period can be either <code>Days</code> or <code>Years</code> but you must select one. You cannot specify <code>Days</code> and <code>Years</code> at the same time."
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/": {
       "get": {
         "operationId": "ListBuckets",
@@ -2025,414 +1837,6 @@
             }
           }
         }
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
-    "/{Bucket}#uploads": {
-      "get": {
-        "operationId": "ListMultipartUploads",
-        "description": "",
-        "externalDocs": {
-          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListMPUpload.html"
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListMultipartUploadsOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "delimiter",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "encoding-type",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "url"
-              ],
-              "description": ""
-            }
-          },
-          {
-            "name": "key-marker",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "max-uploads",
-            "in": "query",
-            "required": false,
-            "description": "Sets the maximum number of multipart uploads, from 1 to 1,000, to return in the response body. 1,000 is the maximum number of uploads that can be returned in a response.",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "prefix",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "upload-id-marker",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MaxUploads",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination limit",
-            "required": false
-          },
-          {
-            "name": "KeyMarker",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination token",
-            "required": false
-          },
-          {
-            "name": "UploadIdMarker",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination token",
-            "required": false
-          },
-          {
-            "name": "uploads",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
-    "/{Bucket}#versions": {
-      "get": {
-        "operationId": "ListObjectVersions",
-        "description": "",
-        "externalDocs": {
-          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETVersion.html"
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListObjectVersionsOutput"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "The bucket name that contains the objects. ",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "delimiter",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "encoding-type",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "url"
-              ],
-              "description": ""
-            }
-          },
-          {
-            "name": "key-marker",
-            "in": "query",
-            "required": false,
-            "description": "Specifies the key to start with when listing objects in a bucket.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "max-keys",
-            "in": "query",
-            "required": false,
-            "description": "S",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "prefix",
-            "in": "query",
-            "required": false,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "version-id-marker",
-            "in": "query",
-            "required": false,
-            "description": "Specifies the object version you want to start listing from.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MaxKeys",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination limit",
-            "required": false
-          },
-          {
-            "name": "KeyMarker",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination token",
-            "required": false
-          },
-          {
-            "name": "VersionIdMarker",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination token",
-            "required": false
-          },
-          {
-            "name": "versions",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "boolean",
-              "enum": [
-                true
-              ]
-            },
-            "allowEmptyValue": true
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/x-amz-security-token"
-        }
-      ]
-    },
-    "/{Bucket}#list-type=2": {
-      "get": {
-        "operationId": "ListObjectsV2",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListObjectsV2Output"
-                }
-              }
-            }
-          },
-          "480": {
-            "description": "NoSuchBucket",
-            "content": {
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoSuchBucket"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Bucket",
-            "in": "path",
-            "required": true,
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "delimiter",
-            "in": "query",
-            "required": false,
-            "description": "A delimiter is a character you use to group keys.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "encoding-type",
-            "in": "query",
-            "required": false,
-            "description": "Encoding type used by Amazon S3 to encode object keys in the response.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "url"
-              ],
-              "description": ""
-            }
-          },
-          {
-            "name": "max-keys",
-            "in": "query",
-            "required": false,
-            "description": "Sets the maximum number of keys returned in the response. By default the action returns up to 1,000 key names. The response might contain fewer keys but will never contain more.",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "prefix",
-            "in": "query",
-            "required": false,
-            "description": "Limits the response to keys that begin with the specified prefix.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "continuation-token",
-            "in": "query",
-            "required": false,
-            "description": "ContinuationToken indicates Amazon S3 that the list is being continued on this bucket with a token. ContinuationToken is obfuscated and is not a real key.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fetch-owner",
-            "in": "query",
-            "required": false,
-            "description": "The owner field is not present in listV2 by default, if you want to return owner field with each key in the result then set the fetch owner field to true.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "start-after",
-            "in": "query",
-            "required": false,
-            "description": "StartAfter is where you want Amazon S3 to start listing from. Amazon S3 starts listing after this specified key. StartAfter can be any key in the bucket.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MaxKeys",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination limit",
-            "required": false
-          },
-          {
-            "name": "ContinuationToken",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Pagination token",
-            "required": false
-          },
-          {
-            "name": "list-type",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "2"
-              ]
-            }
-          }
-        ]
       },
       "parameters": [
         {
