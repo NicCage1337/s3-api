@@ -310,6 +310,236 @@
         ]
       }
     },
+    "/{Bucket}/": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/x-amz-security-token"
+        }
+      ],
+      "head": {
+        "operationId": "HeadBucket",
+        "description": "",
+        "externalDocs": {
+          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html"
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "480": {
+            "description": "NoSuchBucket"
+        }
+      },
+        "parameters": [
+          {
+            "name": "Bucket",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ListObjects2",
+        "description": "",
+        "externalDocs": {
+          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html"
+        },
+        "responses": {
+          "200": {
+            "description": "Success" 
+          },
+          "480": {
+            "description": "NoSuchBucket"
+            }
+        },
+        "parameters": [
+          {
+            "name": "Bucket",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "delimiter",
+            "in": "query",
+            "required": false,
+            "description": "A delimiter is a character you use to group keys.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          },
+          {
+            "name": "encoding-type",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "url"
+              ],
+              "description": ""
+            }
+          },
+          {
+            "name": "versions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          },
+          {
+            "name": "marker",
+            "in": "query",
+            "required": false,
+            "description": "Marker is where you want Amazon S3 to start listing from. Amazon S3 starts listing after this specified key. Marker can be any key in the bucket.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "max-keys",
+            "in": "query",
+            "required": false,
+            "description": "Sets the maximum number of keys returned in the response. By default the action returns up to 1,000 key names. The response might contain fewer keys but will never contain more. ",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "prefix",
+            "in": "query",
+            "required": false,
+            "description": "Limits the response to keys that begin with the specified prefix.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MaxKeys",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination limit",
+            "required": false
+          },
+          {
+            "name": "Marker",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination token",
+            "required": false
+          },
+          {
+            "name": "uploads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          },
+          {
+            "name": "object-lock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            }
+          }
+          
+        ]
+      },
+      "post": {
+        "operationId": "DeleteObjects",
+        "description": "",
+        "externalDocs": {
+          "url": "http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html"
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Bucket",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-amz-bypass-governance-retention",
+            "in": "header",
+            "required": false,
+            "description": "Specifies whether you want to delete this object even if it has a Governance-type Object Lock in place. To use this header, you must have the <code>s3:BypassGovernanceRetention</code> permission.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "x-amz-sdk-checksum-algorithm",
+            "in": "header",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CRC32",
+                "CRC32C",
+                "SHA1",
+                "SHA256"
+              ]
+            }
+          },
+          {
+            "name": "delete",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true
+              ]
+            },
+            "allowEmptyValue": true
+          }
+        ]
+      }
+    },
     "/{Bucket}/{Key}": {
       "delete": {
         "operationId": "DeleteObject",
